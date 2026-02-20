@@ -2,8 +2,6 @@
 
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { input } from "@/components/input";
-import { textarea } from "@/components/textarea";
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from "lucide-react";
 
 const contactInfo = [
