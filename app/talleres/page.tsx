@@ -18,6 +18,9 @@ import { Card } from "@/components/Card";
 
 export default function TalleresPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     nombreAlumno: "",
     edad: "",
@@ -28,17 +31,75 @@ export default function TalleresPage() {
     recibirInfo: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const resetForm = () => {
+    setFormData({
+      nombreAlumno: "",
+      edad: "",
+      taller: "",
+      nombrePadre: "",
+      telefono: "",
+      email: "",
+      recibirInfo: false,
+    });
+    setErrorMsg(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    // Visual only: sin backend todavía.
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setErrorMsg(null);
+
+    // Validación mínima (UX) — el backend vuelve a validar igual
+    if (
+      !formData.nombreAlumno.trim() ||
+      !formData.edad.trim() ||
+      !formData.taller.trim() ||
+      !formData.nombrePadre.trim() ||
+      !formData.telefono.trim() ||
+      !formData.email.trim()
+    ) {
+      setErrorMsg("Por favor, completa todos los campos obligatorios.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/semana-santa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setErrorMsg(data?.error || "No se pudo enviar la solicitud.");
+        return;
+      }
+
+      setFormSubmitted(true);
+      resetForm();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setErrorMsg("Error de red. Inténtalo de nuevo en unos segundos.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
+    const target = e.target;
+
+    // checkbox
+    if (target instanceof HTMLInputElement && target.type === "checkbox") {
+      const { name, checked } = target;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+      return;
+    }
+
+    const { name, value } = target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -314,7 +375,10 @@ export default function TalleresPage() {
                 y todos los detalles.
               </p>
               <Button
-                onClick={() => setFormSubmitted(false)}
+                onClick={() => {
+                  setFormSubmitted(false);
+                  setErrorMsg(null);
+                }}
                 className="bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full px-8 py-6"
               >
                 Enviar otra solicitud
@@ -338,6 +402,7 @@ export default function TalleresPage() {
                       required
                       value={formData.nombreAlumno}
                       onChange={handleChange}
+                      disabled={loading}
                     />
                   </div>
 
@@ -349,6 +414,7 @@ export default function TalleresPage() {
                       required
                       value={formData.edad}
                       onChange={handleChange}
+                      disabled={loading}
                       className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5DD4C1] bg-white"
                     >
                       <option value="">Selecciona edad</option>
@@ -370,6 +436,7 @@ export default function TalleresPage() {
                     required
                     value={formData.taller}
                     onChange={handleChange}
+                    disabled={loading}
                     className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5DD4C1] bg-white"
                   >
                     <option value="">Selecciona un taller</option>
@@ -401,6 +468,7 @@ export default function TalleresPage() {
                         required
                         value={formData.nombrePadre}
                         onChange={handleChange}
+                        disabled={loading}
                       />
                     </div>
 
@@ -414,6 +482,7 @@ export default function TalleresPage() {
                           required
                           value={formData.telefono}
                           onChange={handleChange}
+                          disabled={loading}
                         />
                       </div>
 
@@ -426,6 +495,7 @@ export default function TalleresPage() {
                           required
                           value={formData.email}
                           onChange={handleChange}
+                          disabled={loading}
                         />
                       </div>
                     </div>
@@ -435,14 +505,11 @@ export default function TalleresPage() {
                 <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-lg">
                   <input
                     id="recibirInfo"
+                    name="recibirInfo"
                     type="checkbox"
                     checked={formData.recibirInfo}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        recibirInfo: e.target.checked,
-                      }))
-                    }
+                    onChange={handleChange}
+                    disabled={loading}
                     className="mt-1 h-5 w-5 rounded border-gray-300 text-[#3AB4A1] accent-[#3AB4A1]"
                   />
                   <label
@@ -453,11 +520,18 @@ export default function TalleresPage() {
                   </label>
                 </div>
 
+                {errorMsg && (
+                  <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {errorMsg}
+                  </div>
+                )}
+
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full py-6 text-lg shadow-lg"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full py-6 text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Solicitar plaza
+                  {loading ? "Enviando..." : "Solicitar plaza"}
                 </Button>
 
                 <p className="text-center text-sm text-gray-600">
@@ -486,7 +560,13 @@ export default function TalleresPage() {
   );
 }
 
-function Line({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+function Line({
+  icon,
+  children,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex items-center gap-3">
       {icon}

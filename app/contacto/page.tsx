@@ -1,5 +1,7 @@
 // src/app/contacto/page.tsx
+"use client";
 
+import { useState } from "react";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from "lucide-react";
@@ -14,8 +16,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "info@oriacademy.com",
-    link: "mailto:info@oriacademy.com",
+    value: "info@oriacademy.es",
+    link: "mailto:info@oriacademy.es",
   },
   {
     icon: MapPin,
@@ -32,6 +34,65 @@ const contactInfo = [
 ];
 
 export default function Page() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string>("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget; // ✅ guardar referencia antes de awaits
+
+    setLoading(true);
+    setSuccess(false);
+    setError("");
+
+    const formData = new FormData(form);
+
+    const payload = {
+      name: String(formData.get("name") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim(),
+      phone: String(formData.get("phone") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+      // honeypot anti-spam (debe ir vacío)
+      company: String(formData.get("company") ?? "").trim(),
+    };
+
+    // Honeypot: si viene relleno, casi seguro es bot
+    if (payload.company) {
+      setLoading(false);
+      setSuccess(true);
+      form.reset(); // ✅ ya no falla
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: payload.name,
+          email: payload.email,
+          phone: payload.phone,
+          message: payload.message,
+        }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Error al enviar el mensaje.");
+      }
+
+      setSuccess(true);
+      form.reset(); // ✅ ya no falla
+    } catch (err: any) {
+      setError(err?.message || "Hubo un error al enviar el mensaje.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -66,6 +127,8 @@ export default function Page() {
                       <a
                         key={index}
                         href={info.link}
+                        target={info.link.startsWith("http") ? "_blank" : undefined}
+                        rel={info.link.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="flex items-start gap-4 p-4 rounded-2xl hover:bg-cyan-50 transition-colors group"
                       >
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5DD4C1] to-[#4AC4B1] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
@@ -103,10 +166,25 @@ export default function Page() {
                   Nuestro equipo está disponible para resolver tus dudas por
                   teléfono o WhatsApp.
                 </p>
-                <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full">
-                  <Phone size={18} className="mr-2" />
-                  Llamar Ahora
-                </Button>
+
+                <a href="tel:+34123456789" className="block">
+                  <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full">
+                    <Phone size={18} className="mr-2" />
+                    Llamar Ahora
+                  </Button>
+                </a>
+
+                <a
+                  href="https://wa.me/34123456789"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-3"
+                >
+                  <Button className="w-full bg-white text-[#3AB4A1] border border-[#5DD4C1] hover:bg-cyan-100 rounded-full">
+                    <MessageCircle size={18} className="mr-2" />
+                    WhatsApp
+                  </Button>
+                </a>
               </Card>
             </div>
 
@@ -116,14 +194,29 @@ export default function Page() {
                 Envíanos un Mensaje
               </h3>
 
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot anti-spam (oculto) */}
+                <div className="hidden">
+                  <label>
+                    Company
+                    <input
+                      name="company"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </label>
+                </div>
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Nombre Completo
                   </label>
                   <input
+                    name="name"
                     type="text"
                     placeholder="Tu nombre"
+                    required
                     className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
                   />
                 </div>
@@ -133,8 +226,10 @@ export default function Page() {
                     Email
                   </label>
                   <input
+                    name="email"
                     type="email"
                     placeholder="tu@email.com"
+                    required
                     className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
                   />
                 </div>
@@ -144,6 +239,7 @@ export default function Page() {
                     Teléfono
                   </label>
                   <input
+                    name="phone"
                     type="tel"
                     placeholder="+34 123 456 789"
                     className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
@@ -155,16 +251,34 @@ export default function Page() {
                     Mensaje
                   </label>
                   <textarea
+                    name="message"
                     placeholder="Cuéntanos cómo podemos ayudarte..."
                     rows={5}
+                    required
                     className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
                   />
                 </div>
 
-                <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-xl py-6 text-lg shadow-lg">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-xl py-6 text-lg shadow-lg disabled:opacity-60"
+                >
                   <Send size={20} className="mr-2" />
-                  Enviar Mensaje
+                  {loading ? "Enviando..." : "Enviar Mensaje"}
                 </Button>
+
+                {success && (
+                  <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800">
+                    ¡Mensaje enviado! Te responderemos lo antes posible ✅
+                  </div>
+                )}
+
+                {error && (
+                  <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-red-700">
+                    {error}
+                  </div>
+                )}
               </form>
             </Card>
           </div>
