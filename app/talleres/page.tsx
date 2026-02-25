@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import {
   Users,
   Clock,
@@ -8,20 +9,35 @@ import {
   Award,
   UserCircle,
   Gamepad2,
-  Code,
+  Code2,
   Blocks,
   CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  GraduationCap,
 } from "lucide-react";
 
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
+
+const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
+
+type FormState = {
+  nombreAlumno: string;
+  edad: string;
+  taller: string;
+  nombrePadre: string;
+  telefono: string;
+  email: string;
+  recibirInfo: boolean;
+};
 
 export default function TalleresPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormState>({
     nombreAlumno: "",
     edad: "",
     taller: "",
@@ -30,6 +46,51 @@ export default function TalleresPage() {
     email: "",
     recibirInfo: false,
   });
+
+  const talleres = useMemo(
+    () => [
+      {
+        id: "game-makers-junior",
+        edad: "7–9 años",
+        title: "Ori Game Makers Junior",
+        subtitle: "Crea tu primer videojuego jugando y aprendiendo.",
+        icon: Blocks,
+        highlights: [
+          { icon: Gamepad2, text: "Videojuegos con Scratch" },
+          { icon: UserCircle, text: "Ideal para principiantes" },
+          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Users, text: "Grupos reducidos" },
+        ],
+      },
+      {
+        id: "programacion-creativa",
+        edad: "10–12 años",
+        title: "Ori Programación Creativa",
+        subtitle: "Lógica, creatividad y proyectos que enganchan.",
+        icon: Code2,
+        highlights: [
+          { icon: Sparkles, text: "Proyectos creativos" },
+          { icon: UserCircle, text: "Nivel medio" },
+          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Users, text: "Grupos reducidos" },
+        ],
+      },
+      {
+        id: "game-makers-avanzado",
+        edad: "9–12 años",
+        title: "Ori Game Makers Avanzado",
+        subtitle: "Más retos, más mecánicas, más nivel.",
+        icon: Award,
+        highlights: [
+          { icon: Gamepad2, text: "Mecánicas más avanzadas" },
+          { icon: ShieldCheck, text: "Para alumnos con experiencia" },
+          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Users, text: "Grupos reducidos" },
+        ],
+      },
+    ],
+    [],
+  );
 
   const resetForm = () => {
     setFormData({
@@ -48,7 +109,6 @@ export default function TalleresPage() {
     e.preventDefault();
     setErrorMsg(null);
 
-    // Validación mínima (UX) — el backend vuelve a validar igual
     if (
       !formData.nombreAlumno.trim() ||
       !formData.edad.trim() ||
@@ -88,11 +148,10 @@ export default function TalleresPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const target = e.target;
 
-    // checkbox
     if (target instanceof HTMLInputElement && target.type === "checkbox") {
       const { name, checked } = target;
       setFormData((prev) => ({ ...prev, [name]: checked }));
@@ -103,464 +162,508 @@ export default function TalleresPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const pickTaller = (id: string) => {
+    setFormData((prev) => ({ ...prev, taller: id }));
+    document.getElementById("reserva")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50 py-20 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1]">
-              Talleres de Programación
-            </span>
-            <br />
-            Semana Santa
-          </h1>
+    <div className="min-h-screen bg-white">
+      {/* HERO */}
+<section className="relative overflow-hidden">
+  {/* Fondo tipo Cursos */}
+  <div className="absolute inset-0 
+    bg-gradient-to-r 
+    from-[rgb(var(--brand-mint))/28] 
+    via-slate-100 
+    to-[rgb(var(--brand-lilac))/28]" 
+  />
 
-          <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-3xl mx-auto">
-            Talleres intensivos para niños y adolescentes. Aprende creando videojuegos y
-            proyectos increíbles en solo unos días.
-          </p>
+  {/* Capa gris suave para ese efecto ligeramente frío */}
+  <div className="absolute inset-0 bg-slate-200/30" />
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="#reserva">
-              <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full px-10 py-7 text-lg shadow-lg">
-                Reservar plaza
-              </Button>
-            </a>
+  {/* Glow lateral mint */}
+  <div className="absolute -top-40 -left-32 h-[600px] w-[600px] 
+    rounded-full bg-[rgb(var(--brand-mint))/30] blur-3xl" 
+  />
 
-            <a href="#talleres">
-              <Button className="bg-white hover:bg-gray-100 text-gray-900 rounded-full px-10 py-7 text-lg shadow-lg border border-gray-200">
-                Ver talleres
-              </Button>
-            </a>
-          </div>
+  {/* Glow lateral lilac */}
+  <div className="absolute -bottom-48 -right-32 h-[650px] w-[650px] 
+    rounded-full bg-[rgb(var(--brand-lilac))/30] blur-3xl" 
+  />
 
-          <div className="mt-12 flex flex-wrap justify-center gap-6 text-gray-700">
-            <div className="flex items-center gap-2 bg-white/80 backdrop-blur px-5 py-3 rounded-full shadow-sm">
-              <Calendar className="w-5 h-5 text-[#5DD4C1]" />
-              <span className="font-semibold">Semana Santa</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/80 backdrop-blur px-5 py-3 rounded-full shadow-sm">
-              <Clock className="w-5 h-5 text-[#5DD4C1]" />
-              <span className="font-semibold">Intensivo</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/80 backdrop-blur px-5 py-3 rounded-full shadow-sm">
-              <Users className="w-5 h-5 text-[#5DD4C1]" />
-              <span className="font-semibold">Grupos reducidos</span>
-            </div>
-          </div>
-        </div>
-      </section>
+  <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: EASE }}
+      className="text-center"
+    >
+      <h1 className="font-title text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900">
+        Talleres de Programación
+        <span className="block text-transparent bg-clip-text 
+          bg-gradient-to-r 
+          from-[rgb(var(--brand-mint))] 
+          to-[rgb(var(--brand-lilac))]">
+          para crear videojuegos
+        </span>
+      </h1>
 
-      {/* Talleres */}
-      <section id="talleres" className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Elige tu Taller
+      <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-2xl text-slate-700">
+        4 días para que aprendan creando: lógica, creatividad y un proyecto final jugable.
+      </p>
+
+      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#reserva" className="w-full sm:w-auto">
+          <Button className="btn-primary w-full sm:w-auto rounded-full px-10 py-6 text-lg shadow-lg">
+            Reservar plaza
+          </Button>
+        </a>
+        <a href="#talleres" className="w-full sm:w-auto">
+          <Button className="btn-secondary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+            Ver talleres
+          </Button>
+        </a>
+      </div>
+    </motion.div>
+  </div>
+</section>
+
+      {/* TALLERES */}
+      <section id="talleres" className="relative py-20 md:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="text-center"
+          >
+            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-gray-900">
+              Elige tu taller
             </h2>
-            <p className="text-xl text-gray-600">
-              3 opciones para diferentes edades y niveles
+            <p className="font-body mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+              3 opciones por edades y nivel. Mismo enfoque: aprender creando.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Taller 1 */}
-            <Card className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="bg-gradient-to-r from-orange-400 to-orange-600 p-8 text-white">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-2">7–9 años</div>
-                    <h3 className="text-2xl font-bold mb-2">Ori Game Makers Junior</h3>
-                    <p className="opacity-95">Crea tu primer videojuego</p>
-                  </div>
-                  <Blocks className="w-10 h-10 opacity-90" />
-                </div>
-              </div>
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {talleres.map((t, idx) => {
+              const Icon = t.icon;
+              const isSelected = formData.taller === t.id;
 
-              <div className="p-8 space-y-6">
-                <div className="space-y-3 text-gray-700">
-                  <Line icon={<Gamepad2 className="w-5 h-5 text-orange-500" />}>
-                    Videojuegos con Scratch
-                  </Line>
-                  <Line icon={<UserCircle className="w-5 h-5 text-orange-500" />}>
-                    Ideal para principiantes
-                  </Line>
-                  <Line icon={<Clock className="w-5 h-5 text-orange-500" />}>
-                    4 días · 2h/día
-                  </Line>
-                  <Line icon={<Users className="w-5 h-5 text-orange-500" />}>
-                    10-12 alumnos
-                  </Line>
-                </div>
+              return (
+                <motion.div
+                  key={t.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6, ease: EASE, delay: idx * 0.06 }}
+                >
+                  <Card className="group overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
+                    {/* Header */}
+                    <div className="relative p-7">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/18] via-white to-[rgb(var(--brand-lilac))/18]" />
+                      <div className="relative flex items-start justify-between gap-6">
+                        <div>
+                          <div className="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-black/70 backdrop-blur">
+                            {t.edad}
+                          </div>
+                          <h3 className="font-title mt-3 text-2xl font-extrabold text-gray-900">
+                            {t.title}
+                          </h3>
+                          <p className="font-body mt-2 text-gray-700">
+                            {t.subtitle}
+                          </p>
+                        </div>
 
-                <a href="#reserva">
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full py-6 text-lg shadow-lg">
-                    Reservar
-                  </Button>
-                </a>
-              </div>
-            </Card>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] text-white shadow-md">
+                          <Icon className="h-6 w-6" />
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Taller 2 */}
-            <Card className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1] p-8 text-white">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-2">10–12 años</div>
-                    <h3 className="text-2xl font-bold mb-2">Ori Programación Creativa</h3>
-                    <p className="opacity-95">Crea juegos con lógica y código</p>
-                  </div>
-                  <Code className="w-10 h-10 opacity-90" />
-                </div>
-              </div>
+                    {/* Body */}
+                    <div className="p-7 pt-0">
+                      <div className="mt-4 space-y-3">
+                        {t.highlights.map((h, i) => {
+                          const Hi = h.icon;
+                          return (
+                            <div
+                              key={i}
+                              className="flex items-center gap-3 text-gray-700"
+                            >
+                              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm">
+                                <Hi className="h-5 w-5 text-[rgb(var(--brand-mint))]" />
+                              </span>
+                              <span className="font-body">{h.text}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
 
-              <div className="p-8 space-y-6">
-                <div className="space-y-3 text-gray-700">
-                  <Line icon={<Gamepad2 className="w-5 h-5 text-[#3AB4A1]" />}>
-                    Proyectos creativos
-                  </Line>
-                  <Line icon={<UserCircle className="w-5 h-5 text-[#3AB4A1]" />}>
-                    Para nivel medio
-                  </Line>
-                  <Line icon={<Clock className="w-5 h-5 text-[#3AB4A1]" />}>
-                    4 días · 2h/día
-                  </Line>
-                  <Line icon={<Users className="w-5 h-5 text-[#3AB4A1]" />}>
-                    10-12 alumnos
-                  </Line>
-                </div>
+                      <div className="mt-8 flex flex-col gap-3">
+                        <Button
+                          type="button"
+                          onClick={() => pickTaller(t.id)}
+                          className={
+                            "w-full rounded-full py-6 text-lg " +
+                            (isSelected ? "btn-primary" : "btn-soft-lilac")
+                          }
+                        >
+                          {isSelected ? "Seleccionado ✓" : "Reservar"}
+                        </Button>
 
-                <a href="#reserva">
-                  <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full py-6 text-lg shadow-lg">
-                    Reservar
-                  </Button>
-                </a>
-              </div>
-            </Card>
-
-            {/* Taller 3 */}
-            <Card className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-1">
-              <div className="bg-gradient-to-r from-red-500 to-pink-600 p-8 text-white">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm opacity-90 mb-2">9–12 años</div>
-                    <h3 className="text-2xl font-bold mb-2">Ori Game Makers Avanzado</h3>
-                    <p className="opacity-95">Más retos, más juego</p>
-                  </div>
-                  <Award className="w-10 h-10 opacity-90" />
-                </div>
-              </div>
-
-              <div className="p-8 space-y-6">
-                <div className="space-y-3 text-gray-700">
-                  <Line icon={<Gamepad2 className="w-5 h-5 text-pink-600" />}>
-                    Mecánicas más avanzadas
-                  </Line>
-                  <Line icon={<UserCircle className="w-5 h-5 text-pink-600" />}>
-                    Para alumnos con experiencia
-                  </Line>
-                  <Line icon={<Clock className="w-5 h-5 text-pink-600" />}>
-                    4 días · 2h/día
-                  </Line>
-                  <Line icon={<Users className="w-5 h-5 text-pink-600" />}>
-                    10-12 alumnos
-                  </Line>
-                </div>
-
-                <a href="#reserva">
-                  <Button className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-pink-600 hover:to-red-600 text-white rounded-full py-6 text-lg shadow-lg">
-                    Reservar
-                  </Button>
-                </a>
-              </div>
-            </Card>
+                        <div className="text-center text-xs text-gray-500">
+                          Te contactamos para confirmar disponibilidad
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Beneficios */}
-      <section className="py-20 px-6 bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+      {/* INCLUYE */}
+      <section className="relative overflow-hidden py-20 md:py-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/10] via-white to-[rgb(var(--brand-lilac))/10]" />
+        <div className="absolute -top-40 right-[-120px] h-[520px] w-[520px] rounded-full bg-[rgb(var(--brand-mint))/18] blur-3xl" />
+        <div className="absolute -bottom-44 left-[-140px] h-[560px] w-[560px] rounded-full bg-[rgb(var(--brand-lilac))/18] blur-3xl" />
+
+        <div className="relative mx-auto max-w-6xl px-6">
+          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="space-y-6"
+            >
+              <h2 className="font-title text-4xl md:text-5xl font-extrabold text-gray-900">
                 Qué incluye el taller
               </h2>
-              <p className="text-xl text-gray-700">
-                Una experiencia completa para que aprendan y se lo pasen bien.
+              <p className="font-body text-lg text-gray-700">
+                Una experiencia completa para que aprendan con foco y se
+                diviertan.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 bg-white p-6 rounded-xl shadow-md">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Users className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Grupos reducidos</h3>
-                    <p className="text-gray-600">Atención personalizada</p>
-                  </div>
-                </div>
+              <div className="grid gap-4">
+                <Feature
+                  icon={<Users className="h-5 w-5 text-white" />}
+                  title="Grupos reducidos"
+                  desc="Atención cercana y ritmo adaptado."
+                />
+                <Feature
+                  icon={<Clock className="h-5 w-5 text-white" />}
+                  title="Formato intensivo"
+                  desc="4 días · 2 horas al día."
+                />
+                <Feature
+                  icon={<Award className="h-5 w-5 text-white" />}
+                  title="Diploma incluido"
+                  desc="Se llevan su logro a casa."
+                />
+              </div>
+            </motion.div>
 
-                <div className="flex items-start gap-4 bg-white p-6 rounded-xl shadow-md">
-                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Duración</h3>
-                    <p className="text-gray-600">4 días · 2 horas/día</p>
-                  </div>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
+              className="space-y-6"
+            >
+              <Card className="rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
+                <h3 className="font-title text-2xl font-extrabold text-gray-900">
+                  ¿Qué se llevan a casa?
+                </h3>
 
-                <div className="flex items-start gap-4 bg-white p-6 rounded-xl shadow-md">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#5DD4C1] to-[#4AC4B1] rounded-full flex items-center justify-center flex-shrink-0">
-                    <Award className="w-6 h-6 text-white" />
+                <ul className="mt-6 space-y-4 text-gray-700">
+                  <Bullet>Un proyecto final jugable creado por ellos.</Bullet>
+                  <Bullet>
+                    Conceptos de programación aplicados de forma práctica.
+                  </Bullet>
+                  <Bullet>
+                    Motivación y confianza para seguir aprendiendo.
+                  </Bullet>
+                </ul>
+
+                <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                  <a href="#reserva" className="w-full sm:w-auto">
+                    <Button className="btn-primary w-full rounded-full px-8 py-6 text-lg shadow-lg">
+                      Quiero reservar
+                    </Button>
+                  </a>
+                  <a href="#talleres" className="w-full sm:w-auto">
+                    <Button className="btn-soft-mint w-full rounded-full px-8 py-6 text-lg">
+                      Ver opciones
+                    </Button>
+                  </a>
+                </div>
+              </Card>
+
+              <div className="rounded-3xl border border-black/10 bg-white/70 p-6 shadow-sm backdrop-blur">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] text-white shadow-md">
+                    <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Diploma</h3>
-                    <p className="text-gray-600">Diploma incluido</p>
+                    <p className="font-semibold text-gray-900">
+                      Metodología ORI
+                    </p>
+                    <p className="font-body text-gray-600">
+                      Aprenden “haciendo”, con retos, feedback y mini-logros
+                      diarios.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="p-8 bg-white">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  ¿Qué se llevan a casa?
-                </h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                    <span>Un proyecto final jugable creado por ellos.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                    <span>Conceptos de programación aplicados de forma práctica.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                    <span>Motivación y confianza para seguir aprendiendo.</span>
-                  </li>
-                </ul>
-              </Card>
-
-              <a href="#reserva">
-                <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1] hover:from-[#4AC4B1] hover:to-[#2A9481] text-white rounded-full py-6 text-lg shadow-lg">
-                  Quiero reservar plaza
-                </Button>
-              </a>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Formulario de Reserva */}
-      <section
-        id="reserva"
-        className="py-20 px-6 bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50"
-      >
-        <div className="max-w-3xl mx-auto">
+      {/* FORM */}
+      <section id="reserva" className="relative overflow-hidden py-20 md:py-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/10] via-white to-[rgb(var(--brand-lilac))/10]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.25] [background-image:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.08)_1px,transparent_0)] [background-size:28px_28px]" />
+
+        <div className="relative mx-auto max-w-3xl px-6">
           {formSubmitted ? (
-            <div className="bg-white rounded-2xl p-12 shadow-xl text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 className="w-10 h-10 text-white" />
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="rounded-3xl border border-black/10 bg-white p-10 md:p-12 shadow-xl text-center"
+            >
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                <CheckCircle2 className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+
+              <h2 className="font-title text-3xl md:text-4xl font-extrabold text-gray-900">
                 ¡Solicitud enviada!
               </h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Gracias por tu interés en nuestros talleres de Semana Santa. Nos
-                pondremos en contacto contigo pronto para confirmar la disponibilidad
-                y todos los detalles.
+
+              <p className="font-body mt-4 text-lg text-gray-700">
+                Gracias por tu interés. Te contactaremos pronto para confirmar
+                disponibilidad y detalles.
               </p>
-              <Button
-                onClick={() => {
-                  setFormSubmitted(false);
-                  setErrorMsg(null);
-                }}
-                className="bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full px-8 py-6"
-              >
-                Enviar otra solicitud
-              </Button>
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl">
-              <h2 className="text-4xl font-bold text-center text-gray-900 mb-8">
-                Reserva tu plaza para Semana Santa
-              </h2>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <FieldLabel htmlFor="nombreAlumno">
-                      Nombre del alumno *
-                    </FieldLabel>
-                    <TextInput
-                      id="nombreAlumno"
-                      name="nombreAlumno"
-                      required
-                      value={formData.nombreAlumno}
-                      onChange={handleChange}
-                      disabled={loading}
-                    />
-                  </div>
-
-                  <div>
-                    <FieldLabel htmlFor="edad">Edad del alumno *</FieldLabel>
-                    <select
-                      id="edad"
-                      name="edad"
-                      required
-                      value={formData.edad}
-                      onChange={handleChange}
-                      disabled={loading}
-                      className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5DD4C1] bg-white"
-                    >
-                      <option value="">Selecciona edad</option>
-                      <option value="7">7 años</option>
-                      <option value="8">8 años</option>
-                      <option value="9">9 años</option>
-                      <option value="10">10 años</option>
-                      <option value="11">11 años</option>
-                      <option value="12">12 años</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <FieldLabel htmlFor="taller">Taller de interés *</FieldLabel>
-                  <select
-                    id="taller"
-                    name="taller"
-                    required
-                    value={formData.taller}
-                    onChange={handleChange}
-                    disabled={loading}
-                    className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5DD4C1] bg-white"
-                  >
-                    <option value="">Selecciona un taller</option>
-                    <option value="game-makers-junior">
-                      Ori Game Makers Junior (7–9 años)
-                    </option>
-                    <option value="programacion-creativa">
-                      Ori Programación Creativa (10–12 años)
-                    </option>
-                    <option value="game-makers-avanzado">
-                      Ori Game Makers Avanzado (9–12 años)
-                    </option>
-                  </select>
-                </div>
-
-                <div className="border-t border-gray-200 pt-6 mt-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">
-                    Datos de contacto
-                  </h3>
-
-                  <div className="space-y-6">
-                    <div>
-                      <FieldLabel htmlFor="nombrePadre">
-                        Nombre del padre/madre/tutor *
-                      </FieldLabel>
-                      <TextInput
-                        id="nombrePadre"
-                        name="nombrePadre"
-                        required
-                        value={formData.nombrePadre}
-                        onChange={handleChange}
-                        disabled={loading}
-                      />
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <FieldLabel htmlFor="telefono">Teléfono *</FieldLabel>
-                        <TextInput
-                          id="telefono"
-                          name="telefono"
-                          type="tel"
-                          required
-                          value={formData.telefono}
-                          onChange={handleChange}
-                          disabled={loading}
-                        />
-                      </div>
-
-                      <div>
-                        <FieldLabel htmlFor="email">Email *</FieldLabel>
-                        <TextInput
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          disabled={loading}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-lg">
-                  <input
-                    id="recibirInfo"
-                    name="recibirInfo"
-                    type="checkbox"
-                    checked={formData.recibirInfo}
-                    onChange={handleChange}
-                    disabled={loading}
-                    className="mt-1 h-5 w-5 rounded border-gray-300 text-[#3AB4A1] accent-[#3AB4A1]"
-                  />
-                  <label
-                    htmlFor="recibirInfo"
-                    className="text-sm cursor-pointer text-gray-700"
-                  >
-                    Quiero recibir información de los cursos anuales
-                  </label>
-                </div>
-
-                {errorMsg && (
-                  <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    {errorMsg}
-                  </div>
-                )}
-
+              <div className="mt-8">
                 <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full py-6 text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                  onClick={() => {
+                    setFormSubmitted(false);
+                    setErrorMsg(null);
+                  }}
+                  className="btn-primary rounded-full px-10 py-6 text-lg shadow-lg"
                 >
-                  {loading ? "Enviando..." : "Solicitar plaza"}
+                  Enviar otra solicitud
                 </Button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+  initial={{ opacity: 0, y: 14 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-80px" }}
+  transition={{ duration: 0.6, ease: EASE }}
+  className="relative rounded-[32px] p-[1px] shadow-2xl"
+>
+  {/* Borde degradado exterior */}
+  <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] opacity-70 blur-sm" />
 
-                <p className="text-center text-sm text-gray-600">
-                  Te contactaremos para confirmar disponibilidad · Sin compromiso
-                </p>
-              </form>
-            </div>
+  {/* Card interior */}
+  <div className="relative rounded-[30px] bg-white/90 backdrop-blur-xl border border-white/60 p-10 md:p-14">
+
+    <div className="text-center">
+      <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900">
+        Reserva tu plaza
+      </h2>
+      <p className="font-body mt-4 text-slate-600 text-lg">
+        Completa el formulario y te confirmamos disponibilidad.
+      </p>
+    </div>
+
+    <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+
+      {/* BLOQUE ALUMNO */}
+      <div className="space-y-6">
+        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+          Datos del alumno
+        </h3>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <PremiumInput
+            label="Nombre del alumno *"
+            id="nombreAlumno"
+            name="nombreAlumno"
+            value={formData.nombreAlumno}
+            onChange={handleChange}
+            disabled={loading}
+            placeholder="Nombre y apellidos"
+          />
+
+          <PremiumSelect
+            label="Edad *"
+            id="edad"
+            name="edad"
+            value={formData.edad}
+            onChange={handleChange}
+            disabled={loading}
+          >
+            <option value="">Selecciona edad</option>
+            {Array.from({ length: 10 }, (_, i) => 7 + i).map((n) => (
+              <option key={n} value={String(n)}>
+                {n} años
+              </option>
+            ))}
+          </PremiumSelect>
+        </div>
+
+        <PremiumSelect
+          label="Taller de interés *"
+          id="taller"
+          name="taller"
+          value={formData.taller}
+          onChange={handleChange}
+          disabled={loading}
+        >
+          <option value="">Selecciona un taller</option>
+          <option value="game-makers-junior">
+            Ori Game Makers Junior (7–9 años)
+          </option>
+          <option value="programacion-creativa">
+            Ori Programación Creativa (10–12 años)
+          </option>
+          <option value="game-makers-avanzado">
+            Ori Game Makers Avanzado (9–12 años)
+          </option>
+        </PremiumSelect>
+      </div>
+
+      {/* DIVISOR */}
+      <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+
+      {/* BLOQUE CONTACTO */}
+      <div className="space-y-6">
+        <h3 className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+          Datos de contacto
+        </h3>
+
+        <PremiumInput
+          label="Nombre del padre/madre/tutor *"
+          id="nombrePadre"
+          name="nombrePadre"
+          value={formData.nombrePadre}
+          onChange={handleChange}
+          disabled={loading}
+          placeholder="Nombre completo"
+        />
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <PremiumInput
+            label="Teléfono *"
+            id="telefono"
+            name="telefono"
+            type="tel"
+            value={formData.telefono}
+            onChange={handleChange}
+            disabled={loading}
+            placeholder="+34..."
+          />
+
+          <PremiumInput
+            label="Email *"
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={loading}
+            placeholder="tu@email.com"
+          />
+        </div>
+      </div>
+
+      {/* CHECKBOX */}
+      <div className="flex items-start gap-3 rounded-2xl bg-slate-50 px-6 py-4 border border-slate-200">
+        <input
+          id="recibirInfo"
+          name="recibirInfo"
+          type="checkbox"
+          checked={formData.recibirInfo}
+          onChange={handleChange}
+          disabled={loading}
+          className="mt-1 h-5 w-5 rounded accent-[rgb(var(--brand-mint))]"
+        />
+        <label htmlFor="recibirInfo" className="text-sm text-slate-600">
+          Quiero recibir información de los cursos anuales
+        </label>
+      </div>
+
+      {errorMsg && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {errorMsg}
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        disabled={loading}
+        className="btn-primary w-full py-6 text-lg shadow-xl"
+      >
+        {loading ? "Enviando..." : "Solicitar plaza"}
+      </Button>
+
+      <p className="text-center text-sm text-slate-500">
+        Te contactaremos para confirmar disponibilidad · Sin compromiso
+      </p>
+    </form>
+  </div>
+</motion.div>
           )}
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1] text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-2xl md:text-3xl mb-8 font-semibold">
-            Las vacaciones también pueden ser una oportunidad para aprender algo que les motive.
-          </p>
-          <a href="#reserva">
-            <Button className="bg-white text-[#5DD4C1] hover:bg-gray-100 rounded-full px-12 py-6 text-lg shadow-lg">
-              Reservar plaza ahora
-            </Button>
-          </a>
+      {/* CTA FINAL */}
+      <section className="relative overflow-hidden py-20">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]" />
+        <div className="absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.9)_1px,transparent_0)] [background-size:26px_26px]" />
+
+        <div className="relative mx-auto max-w-4xl px-6 text-center text-white">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="font-title text-2xl md:text-3xl font-extrabold"
+          >
+            Las vacaciones también pueden ser una oportunidad para aprender algo
+            que les motive.
+          </motion.p>
+
+          <div className="mt-10">
+            <a href="#reserva">
+              <Button className="rounded-full px-12 py-6 text-lg shadow-lg bg-white text-gray-900 hover:bg-white/90">
+                Reservar plaza ahora
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
     </div>
   );
 }
 
-function Line({
+/* ---------- UI bits ---------- */
+
+function Pill({
   icon,
   children,
 }: {
@@ -568,10 +671,41 @@ function Line({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      {icon}
-      <span>{children}</span>
+    <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm text-gray-800 shadow-sm backdrop-blur">
+      <span className="text-[rgb(var(--brand-mint))]">{icon}</span>
+      <span className="font-semibold">{children}</span>
     </div>
+  );
+}
+
+function Feature({
+  icon,
+  title,
+  desc,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <div className="flex items-start gap-4 rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-md">
+        {icon}
+      </div>
+      <div>
+        <p className="font-title font-extrabold text-gray-900">{title}</p>
+        <p className="font-body text-gray-600">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function Bullet({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-3">
+      <span className="mt-2 h-2 w-2 rounded-full bg-[rgb(var(--brand-mint))]" />
+      <span className="font-body">{children}</span>
+    </li>
   );
 }
 
@@ -594,9 +728,56 @@ function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={
-        "mt-2 w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#5DD4C1] " +
+        "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-gray-900 shadow-sm " +
+        "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))] " +
         (props.className ?? "")
       }
     />
+  );
+}
+
+function SelectInput(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select
+      {...props}
+      className={
+        "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-gray-900 shadow-sm " +
+        "focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))] " +
+        (props.className ?? "")
+      }
+    />
+  );
+}
+function PremiumInput({ label, ...props }: any) {
+  return (
+    <div>
+      <label className="text-sm font-semibold text-slate-700">
+        {label}
+      </label>
+      <input
+        {...props}
+        className="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 backdrop-blur px-4 py-3 shadow-sm
+        focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))]
+        transition"
+      />
+    </div>
+  );
+}
+
+function PremiumSelect({ label, children, ...props }: any) {
+  return (
+    <div>
+      <label className="text-sm font-semibold text-slate-700">
+        {label}
+      </label>
+      <select
+        {...props}
+        className="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 backdrop-blur px-4 py-3 shadow-sm
+        focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))]
+        transition"
+      >
+        {children}
+      </select>
+    </div>
   );
 }

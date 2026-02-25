@@ -2,9 +2,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Clock, MessageCircle, Sparkles } from "lucide-react";
+
+const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
 
 const contactInfo = [
   {
@@ -41,7 +45,7 @@ export default function Page() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const form = e.currentTarget; // ✅ guardar referencia antes de awaits
+    const form = e.currentTarget;
 
     setLoading(true);
     setSuccess(false);
@@ -58,11 +62,10 @@ export default function Page() {
       company: String(formData.get("company") ?? "").trim(),
     };
 
-    // Honeypot: si viene relleno, casi seguro es bot
     if (payload.company) {
       setLoading(false);
       setSuccess(true);
-      form.reset(); // ✅ ya no falla
+      form.reset();
       return;
     }
 
@@ -85,7 +88,7 @@ export default function Page() {
       }
 
       setSuccess(true);
-      form.reset(); // ✅ ya no falla
+      form.reset();
     } catch (err: any) {
       setError(err?.message || "Hubo un error al enviar el mensaje.");
     } finally {
@@ -95,239 +98,399 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50 py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Contáctanos
-          </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Estamos aquí para responder todas tus preguntas
-            <br />
-            y ayudarte a comenzar tu aventura en programación.
-          </p>
+      {/* HERO premium */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/26] via-slate-100 to-[rgb(var(--brand-lilac))/26]" />
+        <div className="absolute inset-0 bg-slate-200/25" />
+        <div className="absolute -top-44 -left-44 h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/24] blur-3xl" />
+        <div className="absolute -bottom-56 -right-52 h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/24] blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:64px_64px]" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-24 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
+            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-[rgb(var(--ink))/80] shadow-sm backdrop-blur">
+              <Sparkles className="h-4 w-4 text-[rgb(var(--brand-mint))]" />
+              <span>Te ayudamos a elegir</span>
+              <span className="opacity-40">·</span>
+              <span>Sin compromiso</span>
+            </div>
+
+            <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900">
+              Contacto
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]">
+                ORI Academy
+              </span>
+            </h1>
+
+            <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-700">
+              Escríbenos y te orientamos según la edad y el nivel. Respondemos rápido.
+            </p>
+
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="#form" className="w-full sm:w-auto">
+                <Button className="btn-primary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+                  Enviar mensaje
+                </Button>
+              </a>
+              <Link href="/solicitar-plaza" className="w-full sm:w-auto">
+                <Button className="btn-secondary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+                  Solicitar plaza
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  Información de Contacto
-                </h3>
+      {/* CONTENT */}
+      <section className="py-20 px-6">
+        <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-start">
+          {/* INFO */}
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              <h2 className="font-title text-3xl md:text-4xl font-extrabold text-slate-900">
+                Información de contacto
+              </h2>
+              <p className="font-body mt-3 text-slate-600 text-lg">
+                Elige la vía que te sea más cómoda.
+              </p>
+            </motion.div>
 
-                <div className="space-y-6">
-                  {contactInfo.map((info, index) => {
-                    const Icon = info.icon;
-                    return (
-                      <a
-                        key={index}
-                        href={info.link}
-                        target={info.link.startsWith("http") ? "_blank" : undefined}
-                        rel={info.link.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="flex items-start gap-4 p-4 rounded-2xl hover:bg-cyan-50 transition-colors group"
-                      >
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5DD4C1] to-[#4AC4B1] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                          <Icon size={24} className="text-white" />
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 mb-1">
-                            {info.title}
-                          </div>
-                          <div className="text-gray-600">{info.value}</div>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="space-y-4">
+              {contactInfo.map((info, index) => {
+                const Icon = info.icon;
+                const isHttp = info.link.startsWith("http");
 
-              <Card className="p-6 bg-gradient-to-br from-[#5DD4C1] to-[#3AB4A1] text-white shadow-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <Clock size={24} />
-                  <h4 className="text-xl font-bold">Horario de Atención</h4>
-                </div>
-                <div className="space-y-2 text-sm opacity-90">
-                  <p>Lunes a Viernes: 9:00 - 20:00</p>
-                  <p>Sábados: 10:00 - 14:00</p>
-                  <p>Domingos: Cerrado</p>
-                </div>
-              </Card>
+                return (
+                  <motion.a
+                    key={index}
+                    href={info.link}
+                    target={isHttp ? "_blank" : undefined}
+                    rel={isHttp ? "noopener noreferrer" : undefined}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.55, ease: EASE, delay: index * 0.05 }}
+                    className="group flex items-start gap-4 rounded-3xl border border-black/10 bg-white/70 p-5 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                  >
+                    <div className="relative">
+                      <div className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))/18] to-[rgb(var(--brand-lilac))/18] blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                        <Icon size={22} className="text-white" />
+                      </div>
+                    </div>
 
-              <Card className="p-6 bg-cyan-50 border-2 border-[#5DD4C1]">
-                <h4 className="text-xl font-bold text-gray-900 mb-3">
-                  ¿Necesitas ayuda inmediata?
-                </h4>
-                <p className="text-gray-600 mb-4">
-                  Nuestro equipo está disponible para resolver tus dudas por
-                  teléfono o WhatsApp.
-                </p>
-
-                <a href="tel:+34123456789" className="block">
-                  <Button className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-full">
-                    <Phone size={18} className="mr-2" />
-                    Llamar Ahora
-                  </Button>
-                </a>
-
-                <a
-                  href="https://wa.me/34123456789"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block mt-3"
-                >
-                  <Button className="w-full bg-white text-[#3AB4A1] border border-[#5DD4C1] hover:bg-cyan-100 rounded-full">
-                    <MessageCircle size={18} className="mr-2" />
-                    WhatsApp
-                  </Button>
-                </a>
-              </Card>
+                    <div>
+                      <div className="font-semibold text-slate-900">{info.title}</div>
+                      <div className="text-slate-600">{info.value}</div>
+                    </div>
+                  </motion.a>
+                );
+              })}
             </div>
 
-            {/* Contact Form */}
-            <Card className="p-8 bg-white shadow-xl border-2 border-gray-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Envíanos un Mensaje
-              </h3>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              <Card className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/14] via-white to-[rgb(var(--brand-lilac))/14]" />
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-md">
+                      <Clock size={20} className="text-white" />
+                    </div>
+                    <h3 className="font-title text-xl font-extrabold text-slate-900">
+                      Horario de atención
+                    </h3>
+                  </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Honeypot anti-spam (oculto) */}
-                <div className="hidden">
-                  <label>
-                    Company
-                    <input
-                      name="company"
-                      type="text"
-                      tabIndex={-1}
-                      autoComplete="off"
-                    />
-                  </label>
+                  <div className="space-y-2 text-sm text-slate-700">
+                    <p>
+                      <span className="font-semibold">Lunes a Viernes:</span> 9:00 - 20:00
+                    </p>
+                    <p>
+                      <span className="font-semibold">Sábados:</span> 10:00 - 14:00
+                    </p>
+                    <p>
+                      <span className="font-semibold">Domingos:</span> Cerrado
+                    </p>
+                  </div>
                 </div>
+              </Card>
+            </motion.div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Nombre Completo
-                  </label>
-                  <input
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
+            >
+              <Card className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
+                <h3 className="font-title text-xl font-extrabold text-slate-900">
+                  ¿Necesitas ayuda inmediata?
+                </h3>
+                <p className="font-body mt-2 text-slate-600">
+                  Nuestro equipo está disponible para resolver dudas por teléfono o WhatsApp.
+                </p>
+
+                <div className="mt-6 space-y-3">
+                  <a href="tel:+34123456789" className="block">
+                    <Button className="btn-primary w-full rounded-full px-8 py-6 text-lg">
+                      <Phone size={18} className="mr-2" />
+                      Llamar ahora
+                    </Button>
+                  </a>
+
+                  <a
+                    href="https://wa.me/34123456789"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <Button className="btn-secondary w-full rounded-full px-8 py-6 text-lg">
+                      <MessageCircle size={18} className="mr-2" />
+                      WhatsApp
+                    </Button>
+                  </a>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* FORM premium */}
+          <div id="form">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="relative rounded-[32px] p-[1px] shadow-2xl"
+            >
+              {/* Borde degradado exterior */}
+              <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] opacity-70 blur-sm" />
+
+              {/* Card interior */}
+              <Card className="relative rounded-[30px] border border-white/60 bg-white/90 p-8 md:p-10 shadow-sm backdrop-blur-xl">
+                <h2 className="font-title text-2xl md:text-3xl font-extrabold text-slate-900">
+                  Envíanos un mensaje
+                </h2>
+                <p className="font-body mt-2 text-slate-600">
+                  Te respondemos lo antes posible.
+                </p>
+
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                  {/* Honeypot anti-spam (oculto) */}
+                  <div className="hidden">
+                    <label>
+                      Company
+                      <input name="company" type="text" tabIndex={-1} autoComplete="off" />
+                    </label>
+                  </div>
+
+                  <PremiumInput
+                    label="Nombre completo *"
                     name="name"
                     type="text"
                     placeholder="Tu nombre"
                     required
-                    className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
+                    disabled={loading}
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
+                  <PremiumInput
+                    label="Email *"
                     name="email"
                     type="email"
                     placeholder="tu@email.com"
                     required
-                    className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
+                    disabled={loading}
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Teléfono
-                  </label>
-                  <input
+                  <PremiumInput
+                    label="Teléfono"
                     name="phone"
                     type="tel"
                     placeholder="+34 123 456 789"
-                    className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
+                    disabled={loading}
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Mensaje
-                  </label>
-                  <textarea
+                  <PremiumTextarea
+                    label="Mensaje *"
                     name="message"
-                    placeholder="Cuéntanos cómo podemos ayudarte..."
+                    placeholder="Cuéntanos cómo podemos ayudarte…"
                     rows={5}
                     required
-                    className="w-full rounded-xl border-gray-300 focus:border-[#5DD4C1] focus:ring-[#5DD4C1]"
+                    disabled={loading}
                   />
-                </div>
 
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-[#5DD4C1] to-[#4AC4B1] hover:from-[#4AC4B1] hover:to-[#3AB4A1] text-white rounded-xl py-6 text-lg shadow-lg disabled:opacity-60"
-                >
-                  <Send size={20} className="mr-2" />
-                  {loading ? "Enviando..." : "Enviar Mensaje"}
-                </Button>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-primary w-full rounded-full py-6 text-lg shadow-xl disabled:opacity-60"
+                  >
+                    <Send size={20} className="mr-2" />
+                    {loading ? "Enviando..." : "Enviar mensaje"}
+                  </Button>
 
-                {success && (
-                  <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800">
-                    ¡Mensaje enviado! Te responderemos lo antes posible ✅
-                  </div>
-                )}
+                  {success && (
+                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                      ¡Mensaje enviado! Te responderemos lo antes posible ✅
+                    </div>
+                  )}
 
-                {error && (
-                  <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-red-700">
-                    {error}
-                  </div>
-                )}
-              </form>
-            </Card>
+                  {error && (
+                    <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                      {error}
+                    </div>
+                  )}
+                </form>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Map Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-cyan-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      {/* MAP (premium placeholder) */}
+      <section className="relative overflow-hidden py-20 px-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/10] via-white to-[rgb(var(--brand-lilac))/10]" />
+        <div className="relative mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900">
               Visítanos
             </h2>
-            <p className="text-xl text-gray-600">
-              Ven a conocer nuestras instalaciones
+            <p className="font-body mt-3 text-lg text-slate-600">
+              Ven a conocer nuestras instalaciones.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-cyan-100 to-teal-100 h-[400px] flex items-center justify-center">
-            <div className="text-center text-gray-600">
-              <MapPin size={48} className="mx-auto mb-4 text-[#5DD4C1]" />
-              <p className="text-lg font-semibold text-gray-900">
-                Mapa interactivo
-              </p>
-              <p className="text-sm">Calle Innovación 123, Madrid, España</p>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="relative overflow-hidden rounded-3xl border border-black/10 bg-white shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/14] via-white to-[rgb(var(--brand-lilac))/14]" />
+            <div className="relative flex h-[380px] items-center justify-center p-8 text-center">
+              <div>
+                <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                  <MapPin size={28} className="text-white" />
+                </div>
+                <p className="text-lg font-extrabold text-slate-900">Mapa interactivo</p>
+                <p className="mt-2 text-sm text-slate-600">
+                  {contactInfo.find((c) => c.title === "Dirección")?.value}
+                </p>
+                <a
+                  className="mt-6 inline-block text-sm font-semibold text-[rgb(var(--brand-lilac))] hover:underline"
+                  href="https://maps.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir en Google Maps
+                </a>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1]">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      {/* CTA FINAL */}
+      <section className="relative overflow-hidden py-20">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]" />
+        <div className="absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.9)_1px,transparent_0)] [background-size:26px_26px]" />
+
+        <div className="relative mx-auto max-w-4xl px-6 text-center text-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="font-title text-4xl md:text-5xl font-extrabold"
+          >
             ¿Listo para empezar?
-          </h2>
-          <p className="text-xl mb-10 opacity-90">
-            Agenda tu clase de prueba gratuita hoy mismo.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button className="bg-white hover:bg-gray-100 text-[#5DD4C1] rounded-full px-10 py-7 text-lg shadow-lg">
-              Agendar Clase Gratuita
-            </Button>
-            <Button className="bg-[#3AB4A1] hover:bg-[#2A9481] text-white border-2 border-white rounded-full px-10 py-7 text-lg shadow-lg">
-              Descargar Brochure
-            </Button>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
+            className="mt-5 text-lg md:text-xl opacity-90"
+          >
+            Agenda tu clase de prueba y te recomendamos el mejor camino.
+          </motion.p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link href="/solicitar-plaza">
+              <Button className="bg-white hover:bg-white/90 text-slate-900 rounded-full px-10 py-7 text-lg shadow-lg">
+                Solicitar plaza
+              </Button>
+            </Link>
+            <Link href="/cursos">
+              <Button className="bg-white/15 hover:bg-white/20 text-white border border-white/30 rounded-full px-10 py-7 text-lg shadow-lg">
+                Ver cursos
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ---- Inputs premium (sin tocar CSS global) ---- */
+
+function PremiumInput(props: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  const { label, className, ...rest } = props;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <input
+        {...rest}
+        className={
+          "mt-2 w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-slate-900 shadow-sm " +
+          "placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))] " +
+          "transition " +
+          (className ?? "")
+        }
+      />
+    </div>
+  );
+}
+
+function PremiumTextarea(
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }
+) {
+  const { label, className, ...rest } = props;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <textarea
+        {...rest}
+        className={
+          "mt-2 w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-slate-900 shadow-sm " +
+          "placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))] " +
+          "transition " +
+          (className ?? "")
+        }
+      />
     </div>
   );
 }

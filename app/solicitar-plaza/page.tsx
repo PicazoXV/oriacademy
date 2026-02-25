@@ -1,283 +1,541 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { courses } from "@/lib/data/courses";
+import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
+import {
+  Sparkles,
+  Send,
+  CheckCircle2,
+  Phone,
+  Mail,
+  User,
+  GraduationCap,
+  Calendar,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
+
+const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
 
 type FormState = {
-  nombre: string;
-  email: string;
-  telefono: string;
+  nombreAlumno: string;
   edad: string;
-  cursoId: string;
+  curso: string;
+  experiencia: string;
+  nombreTutor: string;
+  telefono: string;
+  email: string;
   mensaje: string;
+  recibirInfo: boolean;
 };
 
-const initial: FormState = {
-  nombre: "",
-  email: "",
-  telefono: "",
-  edad: "",
-  cursoId: "",
-  mensaje: "",
-};
+const cursosOptions = [
+  { value: "", label: "Selecciona un curso" },
+  { value: "scratch", label: "Scratch / Iniciación" },
+  { value: "minecraft", label: "Minecraft Education" },
+  { value: "roblox", label: "Roblox Studio" },
+  { value: "unity", label: "Unity / C#" },
+  { value: "web", label: "Desarrollo Web" },
+  { value: "otro", label: "No lo sé todavía" },
+];
 
 export default function SolicitarPlazaPage() {
-  const [form, setForm] = useState<FormState>(initial);
-  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [ok, setOk] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const courseOptions = useMemo(
-    () => courses.map((c) => ({ value: String(c.id), label: `${c.subtitle} — ${c.ages}` })),
-    []
-  );
+  const [formData, setFormData] = useState<FormState>({
+    nombreAlumno: "",
+    edad: "",
+    curso: "",
+    experiencia: "principiante",
+    nombreTutor: "",
+    telefono: "",
+    email: "",
+    mensaje: "",
+    recibirInfo: true,
+  });
 
-  function set<K extends keyof FormState>(key: K, value: FormState[K]) {
-    setForm((s) => ({ ...s, [key]: value }));
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target as HTMLInputElement;
 
-  const isValid =
-    form.nombre.trim().length >= 2 &&
-    form.email.includes("@") &&
-    form.telefono.trim().length >= 7 &&
-    form.edad.trim().length > 0 &&
-    form.cursoId.trim().length > 0;
+    if (target.type === "checkbox") {
+      const { name, checked } = target;
+      setFormData((p) => ({ ...p, [name]: checked }));
+      return;
+    }
 
-  function onSubmit(e: React.FormEvent) {
+    const { name, value } = e.target;
+    setFormData((p) => ({ ...p, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValid) return;
+    setOk(false);
+    setErrorMsg(null);
 
-    // Opción A (simple): por ahora no enviamos a backend.
-    // Luego lo conectamos con un API route / server action / email provider.
-    setSent(true);
-  }
+    if (
+      !formData.nombreAlumno.trim() ||
+      !formData.edad.trim() ||
+      !formData.nombreTutor.trim() ||
+      !formData.telefono.trim() ||
+      !formData.email.trim()
+    ) {
+      setErrorMsg("Por favor, completa los campos obligatorios.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/solicitar-plaza", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setErrorMsg(data?.error || "No se pudo enviar la solicitud.");
+        return;
+      }
+
+      setOk(true);
+      setFormData({
+        nombreAlumno: "",
+        edad: "",
+        curso: "",
+        experiencia: "principiante",
+        nombreTutor: "",
+        telefono: "",
+        email: "",
+        mensaje: "",
+        recibirInfo: true,
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setErrorMsg("Error de red. Inténtalo de nuevo en unos segundos.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <main className="bg-white">
-      {/* Hero */}
-      <section className="py-16 px-6 bg-gradient-to-br from-cyan-50 via-teal-50 to-emerald-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col gap-4">
-            <div className="inline-flex w-fit bg-orange-500/10 text-orange-700 px-4 py-2 rounded-full text-sm font-semibold">
-              Plaza y clase de prueba
+    <div className="min-h-screen bg-white">
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/26] via-slate-100 to-[rgb(var(--brand-lilac))/26]" />
+        <div className="absolute inset-0 bg-slate-200/25" />
+        <div className="absolute -top-44 -left-44 h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/24] blur-3xl" />
+        <div className="absolute -bottom-56 -right-52 h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/24] blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:64px_64px]" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="text-center"
+          >
+            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-[rgb(var(--ink))/80] shadow-sm backdrop-blur">
+              <Sparkles className="h-4 w-4 text-[rgb(var(--brand-mint))]" />
+              <span>Plazas limitadas</span>
+              <span className="opacity-40">·</span>
+              <span>Respuesta rápida</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900">
-              Solicitar plaza
+
+            <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900">
+              Solicitar
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]">
+                Plaza
+              </span>
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl">
-              Rellena el formulario y te contactamos para confirmar disponibilidad,
-              horarios y nivel recomendado.
+
+            <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-700">
+              Cuéntanos la edad y el nivel. Te recomendamos el curso ideal y te confirmamos
+              disponibilidad.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/cursos" className="text-teal-700 font-semibold hover:underline">
-                ← Ver cursos
-              </Link>
-              <Link href="/contacto" className="text-slate-700 font-semibold hover:underline">
-                Contacto
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="#form" className="w-full sm:w-auto">
+                <Button className="btn-primary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+                  Rellenar solicitud
+                </Button>
+              </a>
+              <Link href="/cursos" className="w-full sm:w-auto">
+                <Button className="btn-secondary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+                  Ver cursos
+                </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Form */}
-      <section className="py-14 px-6">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8">
-          {/* Form card */}
+      {/* CONTENT */}
+      <section id="form" className="py-20 px-6">
+        <div className="mx-auto max-w-7xl grid gap-10 lg:grid-cols-3 items-start">
+          {/* FORM */}
           <div className="lg:col-span-2">
-            <Card className="p-8">
-              {!sent ? (
-                <>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                    Datos del alumno/a
-                  </h2>
-                  <p className="text-slate-600 mb-8">
-                    Te responderemos lo antes posible. Campos obligatorios marcados con *.
-                  </p>
+            {ok ? (
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: EASE }}
+                className="rounded-3xl border border-black/10 bg-white p-10 md:p-12 shadow-xl text-center"
+              >
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                  <CheckCircle2 className="h-10 w-10 text-white" />
+                </div>
 
-                  <form onSubmit={onSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <Field label="Nombre y apellidos *">
-                        <input
-                          value={form.nombre}
-                          onChange={(e) => set("nombre", e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                          placeholder="Ej. Marta García"
-                        />
-                      </Field>
+                <h2 className="font-title text-3xl md:text-4xl font-extrabold text-slate-900">
+                  ¡Solicitud enviada!
+                </h2>
 
-                      <Field label="Edad *">
-                        <input
-                          value={form.edad}
-                          onChange={(e) => set("edad", e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                          placeholder="Ej. 11"
-                        />
-                      </Field>
+                <p className="font-body mt-4 text-lg text-slate-700">
+                  Gracias. Te contactaremos pronto para confirmar disponibilidad y recomendarte
+                  el curso ideal.
+                </p>
 
-                      <Field label="Email *">
-                        <input
-                          value={form.email}
-                          onChange={(e) => set("email", e.target.value)}
-                          type="email"
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                          placeholder="familia@email.com"
-                        />
-                      </Field>
+                <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link href="/cursos">
+                    <Button className="btn-secondary rounded-full px-10 py-6 text-lg">
+                      Ver cursos
+                    </Button>
+                  </Link>
+                  <Button
+                    className="btn-primary rounded-full px-10 py-6 text-lg"
+                    onClick={() => setOk(false)}
+                  >
+                    Enviar otra solicitud
+                  </Button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, ease: EASE }}
+                className="relative rounded-[32px] p-[1px] shadow-2xl"
+              >
+                {/* borde degradado */}
+                <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] opacity-70 blur-sm" />
 
-                      <Field label="Teléfono *">
-                        <input
-                          value={form.telefono}
-                          onChange={(e) => set("telefono", e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                          placeholder="600 000 000"
-                        />
-                      </Field>
+                <Card className="relative rounded-[30px] border border-white/60 bg-white/90 p-8 md:p-10 shadow-sm backdrop-blur-xl">
+                  <div className="flex items-start justify-between gap-6">
+                    <div>
+                      <h2 className="font-title text-2xl md:text-3xl font-extrabold text-slate-900">
+                        Solicitud de plaza
+                      </h2>
+                      <p className="font-body mt-2 text-slate-600">
+                        Completa los datos y te contactamos.
+                      </p>
                     </div>
+                    <div className="hidden md:flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                      <Send className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
 
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <Field label="Curso de interés *">
-                        <select
-                          value={form.cursoId}
-                          onChange={(e) => set("cursoId", e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-200"
+                  <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+                    {/* Alumno */}
+                    <div className="space-y-5">
+                      <div className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+                        Datos del alumno
+                      </div>
+
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <PremiumInput
+                          label="Nombre del alumno *"
+                          name="nombreAlumno"
+                          value={formData.nombreAlumno}
+                          onChange={handleChange}
+                          disabled={loading}
+                          placeholder="Nombre y apellidos"
+                          icon={<User className="h-4 w-4" />}
+                        />
+
+                        <PremiumSelect
+                          label="Edad *"
+                          name="edad"
+                          value={formData.edad}
+                          onChange={handleChange}
+                          disabled={loading}
+                          icon={<GraduationCap className="h-4 w-4" />}
                         >
-                          <option value="">Selecciona un curso</option>
-                          {courseOptions.map((o) => (
+                          <option value="">Selecciona edad</option>
+                          {Array.from({ length: 10 }, (_, i) => 7 + i).map((n) => (
+                            <option key={n} value={String(n)}>
+                              {n} años
+                            </option>
+                          ))}
+                        </PremiumSelect>
+                      </div>
+
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <PremiumSelect
+                          label="Curso de interés"
+                          name="curso"
+                          value={formData.curso}
+                          onChange={handleChange}
+                          disabled={loading}
+                          icon={<Calendar className="h-4 w-4" />}
+                        >
+                          {cursosOptions.map((o) => (
                             <option key={o.value} value={o.value}>
                               {o.label}
                             </option>
                           ))}
-                        </select>
-                      </Field>
+                        </PremiumSelect>
 
-                      <Field label="Preferencia (opcional)">
-                        <select
-                          className="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-200"
-                          defaultValue=""
+                        <PremiumSelect
+                          label="Nivel / experiencia"
+                          name="experiencia"
+                          value={formData.experiencia}
+                          onChange={handleChange}
+                          disabled={loading}
+                          icon={<ShieldCheck className="h-4 w-4" />}
                         >
-                          <option value="">Sin preferencia</option>
-                          <option value="tarde">Tarde</option>
-                          <option value="sabado">Sábados</option>
-                          <option value="online">Online</option>
-                        </select>
-                      </Field>
+                          <option value="principiante">Principiante</option>
+                          <option value="medio">Intermedio</option>
+                          <option value="avanzado">Avanzado</option>
+                        </PremiumSelect>
+                      </div>
+
+                      <PremiumTextarea
+                        label="Mensaje (opcional)"
+                        name="mensaje"
+                        value={formData.mensaje}
+                        onChange={handleChange}
+                        disabled={loading}
+                        placeholder="¿Algo que debamos saber? (experiencia previa, disponibilidad, etc.)"
+                        rows={4}
+                      />
                     </div>
 
-                    <Field label="Mensaje (opcional)">
-                      <textarea
-                        value={form.mensaje}
-                        onChange={(e) => set("mensaje", e.target.value)}
-                        rows={5}
-                        className="w-full rounded-2xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                        placeholder="Cuéntanos nivel, experiencia, disponibilidad..."
-                      />
-                    </Field>
+                    <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    {/* Tutor */}
+                    <div className="space-y-5">
+                      <div className="text-sm font-semibold tracking-widest text-slate-500 uppercase">
+                        Datos de contacto
+                      </div>
+
+                      <PremiumInput
+                        label="Nombre del padre/madre/tutor *"
+                        name="nombreTutor"
+                        value={formData.nombreTutor}
+                        onChange={handleChange}
+                        disabled={loading}
+                        placeholder="Nombre completo"
+                        icon={<User className="h-4 w-4" />}
+                      />
+
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <PremiumInput
+                          label="Teléfono *"
+                          name="telefono"
+                          type="tel"
+                          value={formData.telefono}
+                          onChange={handleChange}
+                          disabled={loading}
+                          placeholder="+34 ..."
+                          icon={<Phone className="h-4 w-4" />}
+                        />
+                        <PremiumInput
+                          label="Email *"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          disabled={loading}
+                          placeholder="tu@email.com"
+                          icon={<Mail className="h-4 w-4" />}
+                        />
+                      </div>
+
+                      <div className="flex items-start gap-3 rounded-2xl bg-slate-50 px-6 py-4 border border-slate-200">
+                        <input
+                          id="recibirInfo"
+                          name="recibirInfo"
+                          type="checkbox"
+                          checked={formData.recibirInfo}
+                          onChange={handleChange}
+                          disabled={loading}
+                          className="mt-1 h-5 w-5 rounded accent-[rgb(var(--brand-mint))]"
+                        />
+                        <label htmlFor="recibirInfo" className="text-sm text-slate-600">
+                          Quiero recibir información de cursos y novedades
+                        </label>
+                      </div>
+
+                      {errorMsg && (
+                        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                          {errorMsg}
+                        </div>
+                      )}
+
                       <Button
                         type="submit"
-                        className={`rounded-full px-8 py-6 text-white shadow-lg ${
-                          isValid
-                            ? "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
-                            : "bg-slate-300 cursor-not-allowed"
-                        }`}
-                        disabled={!isValid}
+                        disabled={loading}
+                        className="btn-primary w-full rounded-full py-6 text-lg shadow-xl disabled:opacity-60"
                       >
-                        Enviar solicitud
+                        {loading ? "Enviando..." : "Enviar solicitud"}
+                        <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>
 
-                      <Link href="/horarios">
-                        <Button className="rounded-full px-8 py-6 bg-white text-slate-900 border border-slate-200 hover:bg-slate-50">
-                          Ver horarios
-                        </Button>
-                      </Link>
-                    </div>
-
-                    {!isValid && (
-                      <p className="text-sm text-slate-500">
-                        Completa nombre, edad, email, teléfono y curso para enviar.
+                      <p className="text-center text-xs text-slate-500">
+                        Te contactaremos para confirmar disponibilidad · Sin compromiso
                       </p>
-                    )}
+                    </div>
                   </form>
-                </>
-              ) : (
-                <div className="py-6">
-                  <h2 className="text-3xl font-extrabold text-slate-900">
-                    ¡Solicitud enviada!
-                  </h2>
-                  <p className="mt-3 text-slate-600">
-                    Te contactaremos pronto para confirmar disponibilidad y próximos pasos.
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link href="/cursos">
-                      <Button className="rounded-full px-8 py-6 bg-slate-900 text-white hover:bg-slate-800">
-                        Volver a cursos
-                      </Button>
-                    </Link>
-                    <Button
-                      className="rounded-full px-8 py-6 bg-white text-slate-900 border border-slate-200 hover:bg-slate-50"
-                      onClick={() => {
-                        setForm(initial);
-                        setSent(false);
-                      }}
-                    >
-                      Enviar otra solicitud
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </Card>
+                </Card>
+              </motion.div>
+            )}
           </div>
 
-          {/* Side info */}
+          {/* SIDEBAR */}
           <div className="lg:col-span-1">
-            <Card className="p-8 sticky top-24">
-              <h3 className="text-lg font-bold text-slate-900">Qué pasa después</h3>
-              <ul className="mt-5 space-y-3 text-slate-700">
-                <li className="flex gap-3">
-                  <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                  <span>Te llamamos o escribimos para confirmar el curso ideal.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                  <span>Te proponemos horarios disponibles y una clase de prueba.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-2 h-2 w-2 rounded-full bg-[#5DD4C1]" />
-                  <span>Confirmas plaza y empezamos.</span>
-                </li>
-              </ul>
-
-              <div className="mt-8 rounded-2xl bg-teal-50 border border-teal-100 p-5">
-                <div className="font-bold text-slate-900">¿Dudas?</div>
-                <p className="text-sm text-slate-700 mt-2">
-                  Escríbenos y te ayudamos a elegir el curso.
-                </p>
-                <div className="mt-4">
-                  <Link href="/contacto">
-                    <Button className="w-full rounded-full px-6 py-5 bg-gradient-to-r from-[#5DD4C1] to-[#3AB4A1] text-white">
-                      Contactar
-                    </Button>
-                  </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
+              className="sticky top-24 space-y-6"
+            >
+              <Card className="rounded-3xl border border-black/10 bg-white p-7 shadow-sm">
+                <h3 className="font-title text-xl font-extrabold text-slate-900">
+                  ¿Qué pasa después?
+                </h3>
+                <div className="mt-4 space-y-3 text-slate-700">
+                  <Step n="1" text="Revisamos tu solicitud." />
+                  <Step n="2" text="Te llamamos / escribimos para confirmar." />
+                  <Step n="3" text="Te recomendamos el curso ideal y horarios." />
+                  <Step n="4" text="Reservamos plaza y listo." />
                 </div>
-              </div>
-            </Card>
+              </Card>
+
+              <Card className="rounded-3xl border border-black/10 bg-white p-7 shadow-sm">
+                <h3 className="font-title text-xl font-extrabold text-slate-900">
+                  ¿Prefieres hablar ahora?
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  Te orientamos en 2 minutos por teléfono o WhatsApp.
+                </p>
+
+                <div className="mt-5 space-y-3">
+                  <a href="tel:+34123456789" className="block">
+                    <Button className="btn-primary w-full rounded-full px-8 py-6 text-lg">
+                      <Phone className="mr-2 h-5 w-5" />
+                      Llamar
+                    </Button>
+                  </a>
+
+                  <a
+                    href="https://wa.me/34123456789"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <Button className="btn-secondary w-full rounded-full px-8 py-6 text-lg">
+                      WhatsApp
+                    </Button>
+                  </a>
+                </div>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Step({ n, text }: { n: string; text: string }) {
   return (
-    <label className="block">
-      <div className="text-sm font-semibold text-slate-900 mb-2">{label}</div>
-      {children}
-    </label>
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[rgb(var(--brand-mint))/18] text-sm font-extrabold text-slate-900">
+        {n}
+      </span>
+      <span className="font-body">{text}</span>
+    </div>
+  );
+}
+
+function PremiumInput(
+  props: React.InputHTMLAttributes<HTMLInputElement> & {
+    label: string;
+    icon?: React.ReactNode;
+  }
+) {
+  const { label, icon, className, ...rest } = props;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <div className="mt-2 flex items-center gap-3 rounded-2xl border border-black/10 bg-white/80 px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[rgb(var(--brand-mint))] transition">
+        {icon ? <span className="text-slate-400">{icon}</span> : null}
+        <input
+          {...rest}
+          className={
+            "w-full bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none " +
+            (className ?? "")
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
+function PremiumSelect(
+  props: React.SelectHTMLAttributes<HTMLSelectElement> & {
+    label: string;
+    icon?: React.ReactNode;
+    children: React.ReactNode;
+  }
+) {
+  const { label, icon, className, children, ...rest } = props;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <div className="mt-2 flex items-center gap-3 rounded-2xl border border-black/10 bg-white/80 px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-[rgb(var(--brand-mint))] transition">
+        {icon ? <span className="text-slate-400">{icon}</span> : null}
+        <select
+          {...rest}
+          className={
+            "w-full bg-transparent text-slate-900 focus:outline-none " + (className ?? "")
+          }
+        >
+          {children}
+        </select>
+      </div>
+    </div>
+  );
+}
+
+function PremiumTextarea(
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    label: string;
+    icon?: React.ReactNode;
+  }
+) {
+  const { label, className, ...rest } = props;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <textarea
+        {...rest}
+        className={
+          "mt-2 w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-slate-900 shadow-sm " +
+          "placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--brand-mint))] transition " +
+          (className ?? "")
+        }
+      />
+    </div>
   );
 }

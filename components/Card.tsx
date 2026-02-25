@@ -8,10 +8,7 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 export function Card({ className, ...props }: Props) {
   return (
     <div
-      className={cn(
-        "rounded-2xl bg-white border border-slate-200 shadow-sm",
-        className
-      )}
+      className={cn("card", className)}
       {...props}
     />
   );
