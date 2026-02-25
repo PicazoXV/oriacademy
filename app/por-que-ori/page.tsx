@@ -1,7 +1,7 @@
 "use client";
 
 // src/app/por-que-ori/page.tsx
-
+import grupo from "@/public/grupo.png";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
@@ -148,7 +148,7 @@ export default function PorQueOriPage() {
             >
               <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-[rgb(var(--brand-mint))/18] to-[rgb(var(--brand-lilac))/18] blur-2xl" />
               <img
-                src="https://images.unsplash.com/photo-1557734864-c78b6dfef1b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                src={grupo.src}
                 alt="Estudiantes trabajando en equipo"
                 className="relative w-full h-auto rounded-3xl shadow-2xl"
               />

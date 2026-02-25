@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Clock, Users, Calendar, Trophy, Award, Sparkles } from "lucide-react";
-
+import niño from "@/public/niñotraje.png";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { courses } from "@/lib/data/courses";
@@ -136,7 +136,7 @@ export default function CursosPage() {
               <div className="absolute -inset-6 rounded-[2rem] bg-[linear-gradient(135deg,rgb(var(--brand-mint)/0.28),rgb(var(--brand-lilac)/0.22))] blur-2xl" />
               <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1658685733664-4cde7bbe4713?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                  src={niño.src}
                   alt="Estudiantes aprendiendo programación"
                   width={1080}
                   height={720}

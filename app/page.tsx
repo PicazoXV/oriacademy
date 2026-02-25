@@ -1,5 +1,5 @@
 "use client";
-
+import niña from "@/public/niña.png";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -122,7 +122,7 @@ export default function HomePage() {
               <div className="absolute -inset-6 rounded-[2rem] bg-[linear-gradient(135deg,rgb(var(--brand-mint)/0.28),rgb(var(--brand-lilac)/0.22))] blur-2xl" />
               <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1525829528215-ffae12a76ac8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                  src={niña}
                   alt="Niño programando videojuegos"
                   width={1080}
                   height={720}
