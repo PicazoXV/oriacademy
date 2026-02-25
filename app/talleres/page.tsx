@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -58,7 +58,7 @@ export default function TalleresPage() {
         highlights: [
           { icon: Gamepad2, text: "Videojuegos con Scratch" },
           { icon: UserCircle, text: "Ideal para principiantes" },
-          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Clock, text: "5 días · 90'/día" },
           { icon: Users, text: "Grupos reducidos" },
         ],
       },
@@ -71,20 +71,20 @@ export default function TalleresPage() {
         highlights: [
           { icon: Sparkles, text: "Proyectos creativos" },
           { icon: UserCircle, text: "Nivel medio" },
-          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Clock, text: "5 días · 90'/día" },
           { icon: Users, text: "Grupos reducidos" },
         ],
       },
       {
         id: "game-makers-avanzado",
-        edad: "9–12 años",
+        edad: "13-16 años",
         title: "Ori Game Makers Avanzado",
         subtitle: "Más retos, más mecánicas, más nivel.",
         icon: Award,
         highlights: [
           { icon: Gamepad2, text: "Mecánicas más avanzadas" },
           { icon: ShieldCheck, text: "Para alumnos con experiencia" },
-          { icon: Clock, text: "4 días · 2h/día" },
+          { icon: Clock, text: "5 días · 90'/día" },
           { icon: Users, text: "Grupos reducidos" },
         ],
       },
@@ -213,7 +213,7 @@ export default function TalleresPage() {
       </h1>
 
       <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-2xl text-slate-700">
-        4 días para que aprendan creando: lógica, creatividad y un proyecto final jugable.
+        5 días para que aprendan creando: lógica, creatividad y un proyecto final jugable.
       </p>
 
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -306,16 +306,20 @@ export default function TalleresPage() {
                       </div>
 
                       <div className="mt-8 flex flex-col gap-3">
-                        <Button
-                          type="button"
-                          onClick={() => pickTaller(t.id)}
-                          className={
-                            "w-full rounded-full py-6 text-lg " +
-                            (isSelected ? "btn-primary" : "btn-soft-lilac")
-                          }
-                        >
-                          {isSelected ? "Seleccionado ✓" : "Reservar"}
-                        </Button>
+                        <Link
+  href={`/contacto?taller=${encodeURIComponent(t.id)}`}
+  className="block w-full"
+>
+  <Button
+    type="button"
+    className={
+      "w-full rounded-full py-6 text-lg " +
+      (isSelected ? "btn-primary" : "btn-soft-lilac")
+    }
+  >
+    {isSelected ? "Seleccionado ✓" : "Solicitar información"}
+  </Button>
+</Link>
 
                         <div className="text-center text-xs text-gray-500">
                           Te contactamos para confirmar disponibilidad
@@ -349,8 +353,7 @@ export default function TalleresPage() {
                 Qué incluye el taller
               </h2>
               <p className="font-body text-lg text-gray-700">
-                Una experiencia completa para que aprendan con foco y se
-                diviertan.
+                Una experiencia completa para que se inicien en el mundo de la programación mientras se divierten.
               </p>
 
               <div className="grid gap-4">
@@ -362,7 +365,7 @@ export default function TalleresPage() {
                 <Feature
                   icon={<Clock className="h-5 w-5 text-white" />}
                   title="Formato intensivo"
-                  desc="4 días · 2 horas al día."
+                  desc="5 días · 90'/día."
                 />
                 <Feature
                   icon={<Award className="h-5 w-5 text-white" />}
@@ -401,9 +404,9 @@ export default function TalleresPage() {
                     </Button>
                   </a>
                   <a href="#talleres" className="w-full sm:w-auto">
-                    <Button className="btn-soft-mint w-full rounded-full px-8 py-6 text-lg">
-                      Ver opciones
-                    </Button>
+                    <Button className="btn-secondary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
+            Ver opciones
+          </Button>
                   </a>
                 </div>
               </Card>
@@ -542,7 +545,7 @@ export default function TalleresPage() {
             Ori Programación Creativa (10–12 años)
           </option>
           <option value="game-makers-avanzado">
-            Ori Game Makers Avanzado (9–12 años)
+            Ori Game Makers Avanzado (13-16 años)
           </option>
         </PremiumSelect>
       </div>

@@ -63,9 +63,9 @@ const benefits = [
 
 const testimonials = [
   {
-    name: "Ana García",
+    name: "Elisabeth",
     role: "Madre de estudiante",
-    text: "Mi hijo ha cambiado completamente su relación con la tecnología. Ahora no solo juega, sino que crea sus propios juegos. ¡Estamos encantados!",
+    text: "Nos ha encantado la experiencia, mi hijo se lo ha pasado en grande en los cursos y Dani el pofesor, era super atento, tenía una paciencia infinita, sin duda repetiria solo por la buena labor que ha hecho con mi hijo.",
   },
   {
     name: "Carlos Martínez",

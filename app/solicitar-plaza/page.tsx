@@ -37,8 +37,11 @@ const cursosOptions = [
   { value: "scratch", label: "Scratch / Iniciación" },
   { value: "minecraft", label: "Minecraft Education" },
   { value: "roblox", label: "Roblox Studio" },
-  { value: "unity", label: "Unity / C#" },
+  { value: "C#", label: "Programación C#" },
   { value: "web", label: "Desarrollo Web" },
+  { value: "unity", label: "Unity" },
+  { value: "python", label: "Programación Python" },
+  { value: "ia", label: "Inteligencia Artificial" },
   { value: "otro", label: "No lo sé todavía" },
 ];
 
@@ -430,15 +433,15 @@ export default function SolicitarPlazaPage() {
                 </p>
 
                 <div className="mt-5 space-y-3">
-                  <a href="tel:+34123456789" className="block">
+                  <a className="block">
                     <Button className="btn-primary w-full rounded-full px-8 py-6 text-lg">
                       <Phone className="mr-2 h-5 w-5" />
-                      Llamar
+                      +34 624 54 74 06
                     </Button>
                   </a>
 
                   <a
-                    href="https://wa.me/34123456789"
+                    href="https://wa.me/34624547406"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block"

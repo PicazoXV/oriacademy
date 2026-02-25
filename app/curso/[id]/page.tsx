@@ -115,7 +115,7 @@ export default async function CursoDetailPage({ params }: Props) {
               {/* Mini callout */}
               <div className="mt-8 rounded-2xl border border-black/10 bg-[rgb(var(--brand-mint))/10] px-5 py-4 text-slate-800">
                 <p className="font-semibold">
-                  Consejo: si tu hijo/a ya ha hecho Scratch, este curso se aprovecha muchísimo más.
+                  Consejo: Curso ideal para alumnos sin experiencia previa.
                 </p>
               </div>
             </Card>

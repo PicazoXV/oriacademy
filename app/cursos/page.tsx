@@ -16,9 +16,9 @@ const progression = [
   { name: "Fundamentos", subtitle: "Scratch", color: "bg-orange-400", emoji: "🎨", level: "7-9" },
   { name: "Creativo", subtitle: "Minecraft", color: "bg-green-500", emoji: "🎮", level: "7-11" },
   { name: "Roblox", subtitle: "Lua", color: "bg-red-500", emoji: "🕹️", level: "10-14" },
-  { name: "Unity", subtitle: "C#", color: "bg-slate-700", emoji: "🚀", level: "12-17" },
-  { name: "Web", subtitle: "JS", color: "bg-blue-500", emoji: "💻", level: "13-17" },
-  { name: "IA", subtitle: "Python", color: "bg-[rgb(var(--brand-mint))]", emoji: "🤖", level: "14-17" },
+  { name: "Unity", subtitle: "C#", color: "bg-slate-700", emoji: "🚀", level: "12-16" },
+  { name: "Web", subtitle: "JS", color: "bg-blue-500", emoji: "💻", level: "13-16" },
+  { name: "IA", subtitle: "Python", color: "bg-[rgb(var(--brand-mint))]", emoji: "🤖", level: "14-16" },
 ];
 
 export default function CursosPage() {
@@ -29,7 +29,7 @@ export default function CursosPage() {
     if (selectedAge === "7-9") return courses.filter((c) => c.ages.includes("7-9"));
     if (selectedAge === "10-12") return courses.filter((c) => c.ages.includes("10-14") || c.ages.includes("10-12"));
     if (selectedAge === "13-16")
-      return courses.filter((c) => c.ages.includes("12-17") || c.ages.includes("13-17") || c.ages.includes("14-17"));
+      return courses.filter((c) => c.ages.includes("12-16") || c.ages.includes("13-16") || c.ages.includes("14-16"));
     return courses;
   }, [selectedAge]);
 
@@ -102,7 +102,7 @@ export default function CursosPage() {
                 className="flex flex-wrap gap-4 pt-1"
               >
                 <Link href="/horarios" className="btn-primary">
-                  Ver Horarios
+                  Ver Cursos
                 </Link>
                 <Link href="/solicitar-plaza" className="btn-secondary">
                   Solicitar plaza
@@ -136,7 +136,7 @@ export default function CursosPage() {
               <div className="absolute -inset-6 rounded-[2rem] bg-[linear-gradient(135deg,rgb(var(--brand-mint)/0.28),rgb(var(--brand-lilac)/0.22))] blur-2xl" />
               <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1758685733664-4cde7bbe4713?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                  src="https://images.unsplash.com/photo-1658685733664-4cde7bbe4713?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
                   alt="Estudiantes aprendiendo programación"
                   width={1080}
                   height={720}
@@ -309,7 +309,7 @@ export default function CursosPage() {
                 viewport={{ once: true, margin: "-60px" }}
                 className="relative"
               >
-                <Card className="w-[175px] bg-white/85 p-6 text-center backdrop-blur transition-all hover:-translate-y-1 hover:shadow-lg border border-black/5">
+                <Card className="w-[165px] bg-white/85 p-6 text-center backdrop-blur transition-all hover:-translate-y-1 hover:shadow-lg border border-black/5">
                   <div
                     className={`mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl ${step.color} text-3xl shadow-lg`}
                   >

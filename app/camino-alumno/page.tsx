@@ -19,7 +19,7 @@ const timeline = [
     age: "7-9 años",
     title: "Etapa 1: Fundamentos",
     color: "from-orange-400 to-orange-600",
-    courses: ["Scratch", "Minecraft Education"],
+    courses: ["Fundamentos de la programación I", "Fundamentos de la programación II"],
     skills: [
       "Pensamiento lógico",
       "Resolución de problemas",
@@ -36,7 +36,7 @@ const timeline = [
     age: "10-12 años",
     title: "Etapa 2: Desarrollo",
     color: "from-red-500 to-pink-600",
-    courses: ["Roblox Studio", "Lua Programming"],
+    courses: ["Creación de Juegos en Roblox", "Desarrollo Web"],
     skills: [
       "Programación textual",
       "Diseño 3D",
@@ -76,8 +76,7 @@ const timeline = [
 const certifications = [
   "Certificado por cada curso completado",
   "Portfolio de proyectos realizados",
-  "Recomendaciones académicas",
-  "Acceso a comunidad de alumni",
+  "Recomendaciones académicas"
 ];
 
 export default function Page() {
@@ -260,35 +259,7 @@ export default function Page() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, ease: EASE }}
             >
-              <Card className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/12] via-white to-transparent" />
-                <div className="relative">
-                  <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
-                    <Briefcase className="h-8 w-8 text-white" />
-                  </div>
-
-                  <h3 className="font-title text-2xl md:text-3xl font-extrabold text-slate-900">
-                    Portfolio profesional
-                  </h3>
-                  <p className="font-body mt-3 text-slate-600">
-                    Proyectos reales acumulados por etapas: jugables, publicables y presentables.
-                  </p>
-
-                  <ul className="mt-6 space-y-3">
-                    <BulletMint>GitHub con proyectos públicos</BulletMint>
-                    <BulletMint>Videojuegos publicados en plataformas</BulletMint>
-                    <BulletMint>Portfolio web personal</BulletMint>
-                  </ul>
-
-                  <div className="mt-8">
-                    <Link href="/cursos">
-                      <Button className="btn-soft-mint rounded-full px-8 py-6 text-lg">
-                        Ver cursos
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </Card>
+              
             </motion.div>
 
             <motion.div

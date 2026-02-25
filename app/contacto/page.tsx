@@ -14,8 +14,8 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Teléfono",
-    value: "+34 123 456 789",
-    link: "tel:+34123456789",
+    value: "+34 624 54 74 06",
+    link: "tel:+34624547406",
   },
   {
     icon: Mail,
@@ -26,14 +26,14 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Dirección",
-    value: "Calle Innovación 123, Madrid, España",
+    value: "Calle Cruz, 21, Albacete, 02001",
     link: "https://maps.google.com",
   },
   {
     icon: MessageCircle,
     title: "WhatsApp",
-    value: "+34 123 456 789",
-    link: "https://wa.me/34123456789",
+    value: "+34 624 54 74 06",
+    link: "https://wa.me/34624547406",
   },
 ];
 
@@ -237,35 +237,7 @@ export default function Page() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
             >
-              <Card className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
-                <h3 className="font-title text-xl font-extrabold text-slate-900">
-                  ¿Necesitas ayuda inmediata?
-                </h3>
-                <p className="font-body mt-2 text-slate-600">
-                  Nuestro equipo está disponible para resolver dudas por teléfono o WhatsApp.
-                </p>
-
-                <div className="mt-6 space-y-3">
-                  <a href="tel:+34123456789" className="block">
-                    <Button className="btn-primary w-full rounded-full px-8 py-6 text-lg">
-                      <Phone size={18} className="mr-2" />
-                      Llamar ahora
-                    </Button>
-                  </a>
-
-                  <a
-                    href="https://wa.me/34123456789"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    <Button className="btn-secondary w-full rounded-full px-8 py-6 text-lg">
-                      <MessageCircle size={18} className="mr-2" />
-                      WhatsApp
-                    </Button>
-                  </a>
-                </div>
-              </Card>
+              
             </motion.div>
           </div>
 
