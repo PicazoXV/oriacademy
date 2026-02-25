@@ -1,7 +1,7 @@
 "use client";
 
 // src/app/por-que-ori/page.tsx
-import grupo from "@/public/grupo.png";
+import grupo from "@/public/gruponiños.png";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
