@@ -22,7 +22,7 @@ const benefits = [
   {
     id: 2,
     icon: Users,
-    color: "from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-mint))/85]",
+    color: "from-teal-400 to-violet-500",
     title: "Clases Reducidas",
     description:
       "Grupos pequeños de 8-12 estudiantes para atención personalizada y mejor aprendizaje.",
@@ -30,7 +30,7 @@ const benefits = [
   {
     id: 3,
     icon: Trophy,
-    color: "from-[rgb(var(--brand-mint))/90] to-[rgb(var(--brand-lilac))/85]",
+    color: "from-emerald-400 to-violet-500",
     title: "Certificación",
     description:
       "Certificados al completar cada curso y portfolio de proyectos realizados.",

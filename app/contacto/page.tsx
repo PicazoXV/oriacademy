@@ -6,7 +6,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { Mail, Phone, MapPin, Send, Clock, MessageCircle, Sparkles } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Clock,
+  MessageCircle,
+  Sparkles,
+} from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
 
@@ -127,7 +135,8 @@ export default function Page() {
             </h1>
 
             <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-xl text-slate-700">
-              Escríbenos y te orientamos según la edad y el nivel. Respondemos rápido.
+              Escríbenos y te orientamos según la edad y el nivel. Respondemos
+              rápido.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -179,7 +188,11 @@ export default function Page() {
                     initial={{ opacity: 0, y: 14 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.55, ease: EASE, delay: index * 0.05 }}
+                    transition={{
+                      duration: 0.55,
+                      ease: EASE,
+                      delay: index * 0.05,
+                    }}
                     className="group flex items-start gap-4 rounded-3xl border border-black/10 bg-white/70 p-5 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-xl"
                   >
                     <div className="relative">
@@ -190,7 +203,9 @@ export default function Page() {
                     </div>
 
                     <div>
-                      <div className="font-semibold text-slate-900">{info.title}</div>
+                      <div className="font-semibold text-slate-900">
+                        {info.title}
+                      </div>
                       <div className="text-slate-600">{info.value}</div>
                     </div>
                   </motion.a>
@@ -218,10 +233,12 @@ export default function Page() {
 
                   <div className="space-y-2 text-sm text-slate-700">
                     <p>
-                      <span className="font-semibold">Lunes a Viernes:</span> 9:00 - 20:00
+                      <span className="font-semibold">Lunes a Viernes:</span>{" "}
+                      9:00 - 20:00
                     </p>
                     <p>
-                      <span className="font-semibold">Sábados:</span> 10:00 - 14:00
+                      <span className="font-semibold">Sábados:</span> 10:00 -
+                      14:00
                     </p>
                     <p>
                       <span className="font-semibold">Domingos:</span> Cerrado
@@ -236,9 +253,7 @@ export default function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
-            >
-              
-            </motion.div>
+            ></motion.div>
           </div>
 
           {/* FORM premium */}
@@ -267,7 +282,12 @@ export default function Page() {
                   <div className="hidden">
                     <label>
                       Company
-                      <input name="company" type="text" tabIndex={-1} autoComplete="off" />
+                      <input
+                        name="company"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
                     </label>
                   </div>
 
@@ -359,25 +379,19 @@ export default function Page() {
             transition={{ duration: 0.6, ease: EASE }}
             className="relative overflow-hidden rounded-3xl border border-black/10 bg-white shadow-2xl"
           >
+            {/* Glow premium suave */}
             <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--brand-mint))/14] via-white to-[rgb(var(--brand-lilac))/14]" />
-            <div className="relative flex h-[380px] items-center justify-center p-8 text-center">
-              <div>
-                <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
-                  <MapPin size={28} className="text-white" />
-                </div>
-                <p className="text-lg font-extrabold text-slate-900">Mapa interactivo</p>
-                <p className="mt-2 text-sm text-slate-600">
-                  {contactInfo.find((c) => c.title === "Dirección")?.value}
-                </p>
-                <a
-                  className="mt-6 inline-block text-sm font-semibold text-[rgb(var(--brand-lilac))] hover:underline"
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Abrir en Google Maps
-                </a>
-              </div>
+            <div className="absolute inset-0 pointer-events-none rounded-3xl ring-1 ring-white/40" />
+            {/* Iframe real */}
+            <div className="relative h-[420px] w-full">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3100.9597863392423!2d-1.852814922981808!3d38.9934141410314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd665feab7ae0583%3A0xc119c9cf553eeba8!2sC.%20Cruz%2C%2021%2C%2002001%20Albacete!5e0!3m2!1ses!2ses!4v1772187015250!5m2!1ses!2ses"
+                className="h-full w-full rounded-3xl"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </motion.div>
         </div>
@@ -429,11 +443,15 @@ export default function Page() {
 
 /* ---- Inputs premium (sin tocar CSS global) ---- */
 
-function PremiumInput(props: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+function PremiumInput(
+  props: React.InputHTMLAttributes<HTMLInputElement> & { label: string },
+) {
   const { label, className, ...rest } = props;
   return (
     <div>
-      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <label className="block text-sm font-semibold text-slate-700">
+        {label}
+      </label>
       <input
         {...rest}
         className={
@@ -448,12 +466,14 @@ function PremiumInput(props: React.InputHTMLAttributes<HTMLInputElement> & { lab
 }
 
 function PremiumTextarea(
-  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string },
 ) {
   const { label, className, ...rest } = props;
   return (
     <div>
-      <label className="block text-sm font-semibold text-slate-700">{label}</label>
+      <label className="block text-sm font-semibold text-slate-700">
+        {label}
+      </label>
       <textarea
         {...rest}
         className={

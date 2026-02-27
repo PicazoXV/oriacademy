@@ -3,7 +3,8 @@ export type Course = {
   title: string;
   subtitle: string;
   gradient: string;
-  emoji: string;
+  icon?: string;
+  emoji?: string;
   description: string;
   features: string[];
   ages: string;
@@ -19,7 +20,7 @@ export const courses: Course[] = [
     title: "Fundamentos de Programación I",
     subtitle: "Scratch",
     gradient: "from-orange-400 to-orange-600",
-    emoji: "🎨",
+    icon: "logos/scratch.svg",
     description: "Introducción a la programación visual",
     features: [
       "Pensamiento lógico y computacional",
@@ -38,7 +39,7 @@ export const courses: Course[] = [
     title: "Fundamentos de Programación II",
     subtitle: "Minecraft Education",
     gradient: "from-green-500 to-green-700",
-    emoji: "🎮",
+    icon: "logos/image.png",
     description: "Aprende programando en Minecraft",
     features: [
       "Programación por bloques en Minecraft",
@@ -58,7 +59,7 @@ export const courses: Course[] = [
     title: "Creación de Juegos en Roblox",
     subtitle: "Lua Programming",
     gradient: "from-red-500 to-pink-600",
-    emoji: "🕹️",
+    icon: "logos/roblox.svg",
     description: "Crea tus propios mundos en Roblox",
     features: ["Programación en Lua", "Diseño de niveles 3D", "Mecánicas de juego", "Publicación de juegos","Se requiere experiencia previa en programacion"],
     ages: "10-14 años",
@@ -72,7 +73,7 @@ export const courses: Course[] = [
     title: "Desarrollo con Unity I",
     subtitle: "C# Programming",
     gradient: "from-[rgb(var(--brand-lilac))] to-purple-800",
-    emoji: "🚀",
+    icon: "logos/unity.png",
     description: "Videojuegos profesionales con Unity",
     features: ["Iniciación a la programación en C#", "Motor Unity 3D", "Física y animaciones 2D", "Juegos multiplataforma", "Ideal para iniciarse en el mundo de laprogramcion"],
     ages: "13-16 años",
@@ -86,7 +87,7 @@ export const courses: Course[] = [
     title: "Desarrollo con Unity II",
     subtitle: "C# Programming",
     gradient: "from-gray-700 to-gray-900",
-    emoji: "🚀",
+    icon: "logos/unity.png",
     description: "Videojuegos profesionales con Unity",
     features: ["Programación avanzada en C#", "Motor Unity 3D", "Física y animaciones 3D", "Juegos multijugadores", "Ideal para iniciarse en el mundo de laprogramcion", "Consejo: imprescindible haber cursado desarrollo con unity I o tener experiencia previa en programacion"],
     ages: "13-16 años",

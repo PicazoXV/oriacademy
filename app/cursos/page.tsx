@@ -13,12 +13,48 @@ import { courses } from "@/lib/data/courses";
 const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
 
 const progression = [
-  { name: "Fundamentos", subtitle: "Scratch", color: "bg-orange-400", emoji: "🎨", level: "7-9" },
-  { name: "Creativo", subtitle: "Minecraft", color: "bg-green-500", emoji: "🎮", level: "7-11" },
-  { name: "Roblox", subtitle: "Lua", color: "bg-red-500", emoji: "🕹️", level: "10-14" },
-  { name: "Unity", subtitle: "C#", color: "bg-slate-700", emoji: "🚀", level: "12-16" },
-  { name: "Web", subtitle: "JS", color: "bg-blue-500", emoji: "💻", level: "13-16" },
-  { name: "IA", subtitle: "Python", color: "bg-[rgb(var(--brand-mint))]", emoji: "🤖", level: "14-16" },
+  {
+    name: "Fundamentos",
+    subtitle: "Scratch",
+    color: "bg-orange-400",
+    emoji: "🐱",
+    level: "7-9",
+  },
+  {
+    name: "Creativo",
+    subtitle: "Minecraft",
+    color: "bg-green-500",
+    emoji: "🧱",
+    level: "7-11",
+  },
+  {
+    name: "Roblox",
+    subtitle: "Lua",
+    color: "bg-red-500",
+    emoji: "🎮",
+    level: "10-14",
+  },
+  {
+    name: "Unity",
+    subtitle: "C#",
+    color: "bg-slate-700",
+    emoji: "🚀",
+    level: "12-16",
+  },
+  {
+    name: "Web",
+    subtitle: "JS",
+    color: "bg-blue-500",
+    emoji: "💻",
+    level: "13-16",
+  },
+  {
+    name: "IA",
+    subtitle: "Python",
+    color: "bg-[rgb(var(--brand-mint))]",
+    emoji: "🤖",
+    level: "14-16",
+  },
 ];
 
 export default function CursosPage() {
@@ -26,10 +62,19 @@ export default function CursosPage() {
 
   const filtered = useMemo(() => {
     if (selectedAge === "all") return courses;
-    if (selectedAge === "7-9") return courses.filter((c) => c.ages.includes("7-9"));
-    if (selectedAge === "10-12") return courses.filter((c) => c.ages.includes("10-14") || c.ages.includes("10-12"));
+    if (selectedAge === "7-9")
+      return courses.filter((c) => c.ages.includes("7-9"));
+    if (selectedAge === "10-12")
+      return courses.filter(
+        (c) => c.ages.includes("10-14") || c.ages.includes("10-12"),
+      );
     if (selectedAge === "13-16")
-      return courses.filter((c) => c.ages.includes("12-16") || c.ages.includes("13-16") || c.ages.includes("14-16"));
+      return courses.filter(
+        (c) =>
+          c.ages.includes("12-16") ||
+          c.ages.includes("13-16") ||
+          c.ages.includes("14-16"),
+      );
     return courses;
   }, [selectedAge]);
 
@@ -61,7 +106,10 @@ export default function CursosPage() {
                 transition={{ duration: 0.7, ease: EASE }}
                 className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white/70 px-4 py-2 text-sm font-extrabold shadow-sm backdrop-blur"
               >
-                <Sparkles size={16} className="text-[rgb(var(--brand-lilac))]" />
+                <Sparkles
+                  size={16}
+                  className="text-[rgb(var(--brand-lilac))]"
+                />
                 Cursos 2026 · 90 min/semana
               </motion.div>
 
@@ -83,7 +131,8 @@ export default function CursosPage() {
                 transition={{ duration: 0.8, ease: EASE, delay: 0.12 }}
                 className="text-xl font-semibold text-slate-700 leading-relaxed"
               >
-                Programación y desarrollo de software para niños y adolescentes de 7 a 16 años.
+                Programación y desarrollo de software para niños y adolescentes
+                de 7 a 16 años.
               </motion.p>
 
               <motion.p
@@ -92,7 +141,8 @@ export default function CursosPage() {
                 transition={{ duration: 0.75, ease: EASE, delay: 0.18 }}
                 className="text-base font-semibold text-slate-600 leading-relaxed max-w-xl"
               >
-                Avanzan por niveles: desde entornos visuales hasta código real, creando proyectos que pueden enseñar y compartir.
+                Avanzan por niveles: desde entornos visuales hasta código real,
+                creando proyectos que pueden enseñar y compartir.
               </motion.p>
 
               <motion.div
@@ -150,45 +200,45 @@ export default function CursosPage() {
       </section>
 
       {/* AGE SELECTOR */}
-      <section className="sticky top-16 z-40 border-b border-black/10 bg-white/85 px-6 py-10 backdrop-blur">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: EASE }}
-            viewport={{ once: true, margin: "-60px" }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Button
-              onClick={() => setSelectedAge("all")}
-              className={selectedAge === "all" ? "btn-primary" : "btn-soft-lilac"}
-            >
-              Todos los Cursos
-            </Button>
+<section className="border-b border-black/10 bg-white/85 px-6 py-10 backdrop-blur">
+  <div className="mx-auto max-w-7xl">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: EASE }}
+      viewport={{ once: true, margin: "-60px" }}
+      className="flex flex-wrap justify-center gap-4"
+    >
+      <Button
+        onClick={() => setSelectedAge("all")}
+        className={selectedAge === "all" ? "btn-primary" : "btn-soft-lilac"}
+      >
+        Todos los Cursos
+      </Button>
 
-            <Button
-              onClick={() => setSelectedAge("7-9")}
-              className={selectedAge === "7-9" ? "btn-primary" : "btn-soft-mint"}
-            >
-              7-9 años
-            </Button>
+      <Button
+        onClick={() => setSelectedAge("7-9")}
+        className={selectedAge === "7-9" ? "btn-primary" : "btn-soft-mint"}
+      >
+        7-9 años
+      </Button>
 
-            <Button
-              onClick={() => setSelectedAge("10-12")}
-              className={selectedAge === "10-12" ? "btn-primary" : "btn-soft-lilac"}
-            >
-              10-12 años
-            </Button>
+      <Button
+        onClick={() => setSelectedAge("10-12")}
+        className={selectedAge === "10-12" ? "btn-primary" : "btn-soft-lilac"}
+      >
+        10-12 años
+      </Button>
 
-            <Button
-              onClick={() => setSelectedAge("13-16")}
-              className={selectedAge === "13-16" ? "btn-primary" : "btn-soft-mint"}
-            >
-              13-16 años
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+      <Button
+        onClick={() => setSelectedAge("13-16")}
+        className={selectedAge === "13-16" ? "btn-primary" : "btn-soft-mint"}
+      >
+        13-16 años
+      </Button>
+    </motion.div>
+  </div>
+</section>
 
       {/* GRID */}
       <section className="bg-white px-6 py-24">
@@ -213,18 +263,40 @@ export default function CursosPage() {
               >
                 <Card className="group overflow-hidden border border-black/5 bg-white transition-all hover:-translate-y-1 hover:shadow-2xl">
                   {/* Top gradient */}
-                  <div className={`relative bg-gradient-to-r ${course.gradient} p-6 text-white`}>
+                  <div
+                    className={`relative bg-gradient-to-r ${course.gradient} p-6 text-white`}
+                  >
                     <div className="absolute right-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-extrabold backdrop-blur-sm">
                       Curso anual · 90 min/semana
                     </div>
 
                     <div className="flex items-start justify-between pt-6">
                       <div className="flex-1">
-                        <div className="mb-1 text-sm font-extrabold opacity-95">{course.subtitle}</div>
-                        <h3 className="mb-2 text-xl font-extrabold">{course.title}</h3>
-                        <p className="text-sm font-semibold opacity-95">{course.description}</p>
+                        <div className="mb-1 text-sm font-extrabold opacity-95">
+                          {course.subtitle}
+                        </div>
+
+                        <h3 className="mb-2 text-xl font-extrabold">
+                          {course.title}
+                        </h3>
+
+                        <p className="text-sm font-semibold opacity-95">
+                          {course.description}
+                        </p>
                       </div>
-                      <div className="ml-4 text-4xl">{course.emoji}</div>
+
+                      {/* Icono en vez de emoji */}
+                      <div className="ml-4 flex h-35 w-35 items-center justify-center rounded-3xl bg-white/15 backdrop-blur border border-white/20 shadow-xl overflow-hidden">
+                        {course.icon ? (
+                          <img
+                            src={course.icon}
+                            alt={course.subtitle}
+                            className="w-full h-full object-contain p-3"
+                          />
+                        ) : course.emoji ? (
+                          <span className="text-5xl">{course.emoji}</span>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
 
@@ -232,45 +304,72 @@ export default function CursosPage() {
                   <div className="space-y-6 p-6">
                     <div className="grid grid-cols-2 gap-4 text-sm font-semibold text-slate-700">
                       <div className="flex items-center gap-2">
-                        <Users size={16} className="text-[rgb(var(--brand-mint))]" />
+                        <Users
+                          size={16}
+                          className="text-[rgb(var(--brand-mint))]"
+                        />
                         <span>{course.ages}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Trophy size={16} className="text-[rgb(var(--brand-lilac))]" />
+                        <Trophy
+                          size={16}
+                          className="text-[rgb(var(--brand-lilac))]"
+                        />
                         <span>{course.level}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Clock size={16} className="text-[rgb(var(--brand-mint))]" />
+                        <Clock
+                          size={16}
+                          className="text-[rgb(var(--brand-mint))]"
+                        />
                         <span>{course.hours}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Calendar size={16} className="text-[rgb(var(--brand-lilac))]" />
+                        <Calendar
+                          size={16}
+                          className="text-[rgb(var(--brand-lilac))]"
+                        />
                         <span>{course.duration.split(" ")[0]} sesiones</span>
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="mb-3 text-sm font-extrabold text-slate-900">Qué aprenderá:</h4>
+                      <h4 className="mb-3 text-sm font-extrabold text-slate-900">
+                        Qué aprenderá:
+                      </h4>
                       <div className="space-y-2">
                         {course.features.map((feature: string, i: number) => (
                           <div key={i} className="flex items-start gap-2">
                             <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[rgb(var(--brand-mint))]" />
-                            <span className="text-sm font-semibold text-slate-700">{feature}</span>
+                            <span className="text-sm font-semibold text-slate-700">
+                              {feature}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 rounded-xl border border-black/5 bg-[rgb(var(--brand-mint)/0.10)] p-3">
-                      <Award size={18} className="text-[rgb(var(--brand-mint))]" />
-                      <span className="text-sm font-extrabold text-slate-800">Proyecto final certificado</span>
+                      <Award
+                        size={18}
+                        className="text-[rgb(var(--brand-mint))]"
+                      />
+                      <span className="text-sm font-extrabold text-slate-800">
+                        Proyecto final certificado
+                      </span>
                     </div>
 
                     <div className="space-y-2 pt-1">
-                      <Link href={`/curso/${course.id}`} className="btn-primary w-full">
+                      <Link
+                        href={`/curso/${course.id}`}
+                        className="btn-primary w-full"
+                      >
                         Ver Temario Completo
                       </Link>
-                      <Link href="/solicitar-plaza" className="btn-secondary w-full">
+                      <Link
+                        href="/solicitar-plaza"
+                        className="btn-secondary w-full"
+                      >
                         Solicitar Plaza
                       </Link>
                     </div>
@@ -309,16 +408,25 @@ export default function CursosPage() {
                 viewport={{ once: true, margin: "-60px" }}
                 className="relative"
               >
-                <Card className="w-[165px] bg-white/85 p-6 text-center backdrop-blur transition-all hover:-translate-y-1 hover:shadow-lg border border-black/5">
-                  <div
-                    className={`mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl ${step.color} text-3xl shadow-lg`}
-                  >
-                    {step.emoji}
-                  </div>
-                  <h4 className="mb-1 text-sm font-extrabold text-slate-900">{step.name}</h4>
-                  <p className="mb-1 text-xs font-semibold text-slate-600">{step.subtitle}</p>
-                  <p className="text-xs font-extrabold text-[rgb(var(--brand-lilac))]">{step.level} años</p>
-                </Card>
+                <Card className="w-[190px] bg-white/85 p-7 text-center backdrop-blur transition-all hover:-translate-y-1 hover:shadow-xl border border-black/5">
+  <div
+    className={`mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-3xl ${step.color} text-4xl shadow-lg`}
+  >
+    {step.emoji}
+  </div>
+
+  <h4 className="mb-2 text-base font-extrabold text-slate-900">
+    {step.name}
+  </h4>
+
+  <p className="mb-1 text-sm font-semibold text-slate-600">
+    {step.subtitle}
+  </p>
+
+  <p className="text-sm font-extrabold text-[rgb(var(--brand-lilac))]">
+    {step.level} años
+  </p>
+</Card>
 
                 {index < progression.length - 1 && (
                   <div
@@ -334,7 +442,8 @@ export default function CursosPage() {
 
           <div className="space-y-6 text-center">
             <p className="mx-auto max-w-2xl text-lg font-semibold text-slate-700">
-              Cada curso está diseñado para construir sobre las habilidades anteriores, asegurando un progreso continuo y significativo.
+              Cada curso está diseñado para construir sobre las habilidades
+              anteriores, asegurando un progreso continuo y significativo.
             </p>
 
             <Link href="/solicitar-plaza" className="btn-primary px-10 py-4">

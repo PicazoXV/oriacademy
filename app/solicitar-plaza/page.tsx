@@ -34,15 +34,14 @@ type FormState = {
 
 const cursosOptions = [
   { value: "", label: "Selecciona un curso" },
-  { value: "scratch", label: "Scratch / Iniciación" },
-  { value: "minecraft", label: "Minecraft Education" },
-  { value: "roblox", label: "Roblox Studio" },
-  { value: "C#", label: "Programación C#" },
+  { value: "progamacion1", label: "Fundamentos de la programación I" },
+  { value: "progamacion2", label: "Fundamentos de la programación II" },
+  { value: "roblox", label: "Creación de juegos en Roblox" },
+  { value: "unity", label: "Desarrollo con Unity I" },
+  { value: "unity2", label: "Desarrollo con Unity II" },
   { value: "web", label: "Desarrollo Web" },
-  { value: "unity", label: "Unity" },
-  { value: "python", label: "Programación Python" },
-  { value: "ia", label: "Inteligencia Artificial" },
-  { value: "otro", label: "No lo sé todavía" },
+  { value: "ia", label: "Inteligencia Artificial I" },
+  { value: "ia2", label: "Inteligencia Artificial II" }
 ];
 
 export default function SolicitarPlazaPage() {
