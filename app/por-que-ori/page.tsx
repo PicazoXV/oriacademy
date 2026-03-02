@@ -216,7 +216,7 @@ export default function PorQueOriPage() {
       {/* (ELIMINADO) Nuestro Equipo */}
 
       {/* INSTALACIONES */}
-      <section id="instalaciones" className="py-20 px-6 bg-white">
+      {/*<section id="instalaciones" className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -261,9 +261,9 @@ export default function PorQueOriPage() {
                 className="w-full h-full object-cover"
               />
             </motion.div>
-          </div>
+          </div> 
         </div>
-      </section>
+      </section> */}
 
       {/* TESTIMONIOS */}
       <section className="py-20 px-6 bg-gradient-to-b from-white to-slate-50">

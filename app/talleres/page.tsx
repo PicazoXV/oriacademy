@@ -202,10 +202,10 @@ export default function TalleresPage() {
       transition={{ duration: 0.7, ease: EASE }}
       className="text-center"
     >
-      <h1 className="font-title text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900">
+      <h1 className="font-title text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 ">
         Talleres de Programación
-        <span className="block text-transparent bg-clip-text 
-          bg-gradient-to-r 
+        <span className="block text-transparent bg-clip-text h-[100px]
+          bg-gradient-to-r   
           from-[rgb(var(--brand-mint))] 
           to-[rgb(var(--brand-lilac))]">
           para crear videojuegos
@@ -213,13 +213,13 @@ export default function TalleresPage() {
       </h1>
 
       <p className="font-body mx-auto mt-6 max-w-3xl text-lg md:text-2xl text-slate-700">
-        5 días para que aprendan creando: lógica, creatividad y un proyecto final jugable.
+        5 días para que aprendan creando: lógica, creatividad, programación y proyectos jugables en todas las clases.
       </p>
 
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a href="#reserva" className="w-full sm:w-auto">
           <Button className="btn-primary w-full sm:w-auto rounded-full px-10 py-6 text-lg shadow-lg">
-            Reservar plaza
+            Solicitar información
           </Button>
         </a>
         <a href="#talleres" className="w-full sm:w-auto">
@@ -486,10 +486,10 @@ export default function TalleresPage() {
 
     <div className="text-center">
       <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900">
-        Reserva tu plaza
+        Solicita información
       </h2>
       <p className="font-body mt-4 text-slate-600 text-lg">
-        Completa el formulario y te confirmamos disponibilidad.
+        Completa el formulario y nos pondremos en contacto para confirmar disponibilidad y resolver tus dudas. Sin compromiso.
       </p>
     </div>
 
@@ -546,6 +546,9 @@ export default function TalleresPage() {
           </option>
           <option value="game-makers-avanzado">
             Ori Game Makers Avanzado (13-16 años)
+          </option>
+          <option value="game-makers-avanzado">
+            No lo tengo claro todavía
           </option>
         </PremiumSelect>
       </div>
@@ -621,7 +624,7 @@ export default function TalleresPage() {
         disabled={loading}
         className="btn-primary w-full py-6 text-lg shadow-xl"
       >
-        {loading ? "Enviando..." : "Solicitar plaza"}
+        {loading ? "Enviando..." : "Solicitar información"}
       </Button>
 
       <p className="text-center text-sm text-slate-500">
@@ -654,7 +657,7 @@ export default function TalleresPage() {
           <div className="mt-10">
             <a href="#reserva">
               <Button className="rounded-full px-12 py-6 text-lg shadow-lg bg-white text-gray-900 hover:bg-white/90">
-                Reservar plaza ahora
+                Solicitar información
               </Button>
             </a>
           </div>

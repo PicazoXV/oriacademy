@@ -233,9 +233,9 @@ export default function HomePage() {
                 Clase Gratuita
               </Button>
             </Link>
-            <Link href="/horarios">
+            <Link href="/cursos">
               <Button className="rounded-full px-10 py-6 text-lg font-extrabold shadow-lg border-2 border-white text-white bg-white/10 hover:bg-white/15">
-                Ver Horarios
+                Ver cursos
               </Button>
             </Link>
           </div>

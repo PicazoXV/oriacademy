@@ -129,7 +129,7 @@ export default function Page() {
 
             <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900">
               Contacto
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] h-[100px]">
                 ORI Academy
               </span>
             </h1>
