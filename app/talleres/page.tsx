@@ -88,6 +88,7 @@ export default function TalleresPage() {
           { icon: Users, text: "Grupos reducidos" },
         ],
       },
+      
     ],
     [],
   );
@@ -547,7 +548,7 @@ export default function TalleresPage() {
           <option value="game-makers-avanzado">
             Ori Game Makers Avanzado (13-16 años)
           </option>
-          <option value="game-makers-avanzado">
+          <option value="no-lo-tengo-claro">
             No lo tengo claro todavía
           </option>
         </PremiumSelect>
