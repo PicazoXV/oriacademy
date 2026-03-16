@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import SolicitarPlazaPageClient from "./SolicitarPlazaPageClient";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
@@ -37,7 +38,9 @@ export default function SolicitarPlazaPage() {
           __html: JSON.stringify(breadcrumbSchema),
         }}
       />
-      <SolicitarPlazaPageClient />
+      <Suspense fallback={<div className="min-h-[40vh]" aria-hidden="true" />}>
+        <SolicitarPlazaPageClient />
+      </Suspense>
     </>
   );
 }

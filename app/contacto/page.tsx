@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import ContactoPageClient from "./ContactoPageClient";
 import { buildPageMetadata, siteConfig } from "@/lib/seo";
@@ -37,7 +38,9 @@ export default function ContactoPage() {
           __html: JSON.stringify(breadcrumbSchema),
         }}
       />
-      <ContactoPageClient />
+      <Suspense fallback={<div className="min-h-[40vh]" aria-hidden="true" />}>
+        <ContactoPageClient />
+      </Suspense>
     </>
   );
 }
