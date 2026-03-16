@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
+import { isValidEmail, isValidPhone } from "@/lib/validation";
 
 type Payload = {
   nombreAlumno: string;
@@ -52,6 +53,22 @@ export async function POST(req: Request) {
     if (!nombreAlumno || !edad || !nombreTutor || !telefono || !email) {
       return Response.json(
         { error: "Por favor, completa los campos obligatorios." },
+        { status: 400 }
+      );
+    }
+
+    if (!isValidEmail(email)) {
+      return Response.json({ error: "Email inválido." }, { status: 400 });
+    }
+
+    if (!isValidPhone(telefono)) {
+      return Response.json({ error: "Teléfono inválido." }, { status: 400 });
+    }
+
+    const edadNumber = Number(edad);
+    if (!Number.isFinite(edadNumber) || edadNumber < 7 || edadNumber > 16) {
+      return Response.json(
+        { error: "Edad inválida. Debe estar entre 7 y 16 años." },
         { status: 400 }
       );
     }

@@ -1,5 +1,6 @@
 export type Course = {
   id: number;
+  slug: string;
   title: string;
   subtitle: string;
   gradient: string;
@@ -17,6 +18,7 @@ export type Course = {
 export const courses: Course[] = [
   {
     id: 1,
+    slug: "fundamentos-programacion-i",
     title: "Fundamentos de Programación I",
     subtitle: "Scratch",
     gradient: "from-orange-400 to-orange-600",
@@ -26,7 +28,7 @@ export const courses: Course[] = [
       "Pensamiento lógico y computacional",
       "Programación por bloques",
       "Creación de juegos y animaciones",
-      "Introducción a conceptos basicos de programación",
+      "Introducción a conceptos básicos de programación",
     ],
     ages: "7-9 años",
     level: "Principiante",
@@ -36,6 +38,7 @@ export const courses: Course[] = [
   },
   {
     id: 2,
+    slug: "fundamentos-programacion-ii",
     title: "Fundamentos de Programación II",
     subtitle: "Minecraft Education",
     gradient: "from-green-500 to-green-700",
@@ -46,7 +49,7 @@ export const courses: Course[] = [
       "Programación visual y Python",
       "Resolución de problemas",
       "Construcción con código",
-      "Ideal para alumnos que ya hayan cursado funamentos de la programacion 1"
+      "Ideal para alumnos que ya hayan cursado Fundamentos de Programación I",
     ],
     ages: "7-9 años",
     level: "Principiante",
@@ -56,12 +59,19 @@ export const courses: Course[] = [
   },
   {
     id: 3,
+    slug: "creacion-juegos-roblox",
     title: "Creación de Juegos en Roblox",
     subtitle: "Lua Programming",
     gradient: "from-red-500 to-pink-600",
     icon: "logos/roblox.svg",
     description: "Crea tus propios mundos en Roblox",
-    features: ["Programación en Lua", "Diseño de niveles 3D", "Mecánicas de juego", "Publicación de juegos","Se requiere experiencia previa en programacion"],
+    features: [
+      "Programación en Lua",
+      "Diseño de niveles 3D",
+      "Mecánicas de juego",
+      "Publicación de juegos",
+      "Se requiere experiencia previa en programación",
+    ],
     ages: "10-14 años",
     level: "Intermedio",
     duration: "+35 sesiones de 90 min",
@@ -70,12 +80,19 @@ export const courses: Course[] = [
   },
   {
     id: 4,
+    slug: "desarrollo-unity-i",
     title: "Desarrollo con Unity I",
     subtitle: "C# Programming",
     gradient: "from-[rgb(var(--brand-lilac))] to-purple-800",
     icon: "logos/unity.png",
     description: "Videojuegos profesionales con Unity",
-    features: ["Iniciación a la programación en C#", "Motor Unity 3D", "Física y animaciones 2D", "Juegos multiplataforma", "Ideal para iniciarse en el mundo de laprogramcion"],
+    features: [
+      "Iniciación a la programación en C#",
+      "Motor Unity 3D",
+      "Física y animaciones 2D",
+      "Juegos multiplataforma",
+      "Ideal para iniciarse en el mundo de la programación",
+    ],
     ages: "13-16 años",
     level: "Avanzado",
     duration: "+35 sesiones de 120 min",
@@ -84,12 +101,20 @@ export const courses: Course[] = [
   },
   {
     id: 5,
+    slug: "desarrollo-unity-ii",
     title: "Desarrollo con Unity II",
     subtitle: "C# Programming",
     gradient: "from-gray-700 to-gray-900",
     icon: "logos/unity.png",
     description: "Videojuegos profesionales con Unity",
-    features: ["Programación avanzada en C#", "Motor Unity 3D", "Física y animaciones 3D", "Juegos multijugadores", "Ideal para iniciarse en el mundo de laprogramcion", "Consejo: imprescindible haber cursado desarrollo con unity I o tener experiencia previa en programacion"],
+    features: [
+      "Programación avanzada en C#",
+      "Motor Unity 3D",
+      "Física y animaciones 3D",
+      "Juegos multijugador",
+      "Ideal para iniciarse en el mundo de la programación",
+      "Imprescindible haber cursado Desarrollo con Unity I o tener experiencia previa en programación",
+    ],
     ages: "13-16 años",
     level: "Avanzado",
     duration: "+35 sesiones de 120 min",
@@ -98,6 +123,7 @@ export const courses: Course[] = [
   },
   {
     id: 6,
+    slug: "desarrollo-web",
     title: "Desarrollo Web",
     subtitle: "HTML, CSS & JavaScript",
     gradient: "from-blue-500 to-cyan-600",
@@ -112,12 +138,19 @@ export const courses: Course[] = [
   },
   {
     id: 7,
+    slug: "inteligencia-artificial-i",
     title: "Inteligencia Artificial I",
     subtitle: "Python & Machine Learning",
     gradient: "from-yellow-300 to-amber-400",
     emoji: "🤖",
     description: "Introducción al Machine Learning",
-    features: ["Introducción a python", "Programación de videojuegos", "Aplicaciones gráficas", "Proyectos prácticos", "Ideal para iniciarse en el mundo de la inteligencia artificial"],
+    features: [
+      "Introducción a Python",
+      "Programación de videojuegos",
+      "Aplicaciones gráficas",
+      "Proyectos prácticos",
+      "Ideal para iniciarse en el mundo de la inteligencia artificial",
+    ],
     ages: "14-16 años",
     level: "Avanzado",
     duration: "+35 sesiones de 120 min",
@@ -126,12 +159,19 @@ export const courses: Course[] = [
   },
   {
     id: 8,
+    slug: "inteligencia-artificial-ii",
     title: "Inteligencia Artificial II",
     subtitle: "Python & Machine Learning",
     gradient: "from-[#5DD4C1] to-[#3AB4A1]",
     emoji: "🤖",
     description: "Introducción al Machine Learning",
-    features: ["Python avanzado", "Algoritmos de IA", "Redes neuronales", "Proyectos prácticos", "Imprescindible conceptos basicos en python"],
+    features: [
+      "Python avanzado",
+      "Algoritmos de IA",
+      "Redes neuronales",
+      "Proyectos prácticos",
+      "Imprescindible dominar conceptos básicos de Python",
+    ],
     ages: "14-16 años",
     level: "Avanzado",
     duration: "+35 sesiones de 120 min",

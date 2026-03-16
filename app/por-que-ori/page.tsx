@@ -1,14 +1,18 @@
-"use client";
-
 // src/app/por-que-ori/page.tsx
 import grupo from "@/public/gruponiños.png";
+import Image from "next/image";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Card } from "@/components/Card";
-import { Button } from "@/components/Button";
 import { Sparkles, Trophy, Users, Heart, Zap, Target } from "lucide-react";
+import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
-const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
+export const metadata: Metadata = buildPageMetadata({
+  title: "Por Qué ORI Academy",
+  description:
+    "Conoce la metodología, valores y beneficios de ORI Academy para aprender programación y desarrollo de videojuegos desde edades tempranas.",
+  path: "/por-que-ori",
+});
 
 const benefits = [
   {
@@ -65,7 +69,7 @@ const testimonials = [
   {
     name: "Elisabeth",
     role: "Madre de estudiante",
-    text: "Nos ha encantado la experiencia, mi hijo se lo ha pasado en grande en los cursos y Dani el pofesor, era super atento, tenía una paciencia infinita, sin duda repetiria solo por la buena labor que ha hecho con mi hijo.",
+    text: "Nos ha encantado la experiencia. Mi hijo se lo ha pasado en grande y Dani, el profesor, fue muy atento y paciente. Sin duda repetiríamos.",
   },
   {
     name: "Carlos Martínez",
@@ -80,8 +84,33 @@ const testimonials = [
 ];
 
 export default function PorQueOriPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteConfig.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Por qué ORI",
+        item: `${siteConfig.url}/por-que-ori`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       {/* HERO premium */}
       <section className="relative overflow-hidden">
         {/* Fondo tipo Cursos (mint → gris → lilac) */}
@@ -89,19 +118,16 @@ export default function PorQueOriPage() {
         <div className="absolute inset-0 bg-slate-200/25" />
 
         {/* glows */}
-        <div className="absolute -top-44 -left-44 h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/24] blur-3xl" />
-        <div className="absolute -bottom-56 -right-52 h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/24] blur-3xl" />
+        <div className="absolute -top-44 -left-44 hidden h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/24] blur-3xl md:block" />
+        <div className="absolute -bottom-56 -right-52 hidden h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/24] blur-3xl md:block" />
 
         {/* grid sutil */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:64px_64px]" />
 
-        <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-24">
+        <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
+            <div
               className="space-y-6"
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-[rgb(var(--ink))/80] shadow-sm backdrop-blur">
@@ -111,7 +137,7 @@ export default function PorQueOriPage() {
                 <span>Proyectos reales</span>
               </div>
 
-              <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900">
+              <h1 className="font-title text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900">
                 ¿Por qué elegir
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]">
@@ -126,33 +152,29 @@ export default function PorQueOriPage() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <Link href="/contacto">
-                  <Button className="btn-primary rounded-full px-8 py-6 text-lg">
-                    Agenda una visita
-                  </Button>
+                <Link href="/contacto" className="btn-primary btn-cta rounded-full">
+                  Hablar con un asesor
                 </Link>
-                <a href="#instalaciones">
-                  <Button className="btn-secondary rounded-full px-8 py-6 text-lg">
-                    Ver instalaciones
-                  </Button>
-                </a>
+                <Link href="#testimonios" className="btn-secondary btn-cta rounded-full">
+                  Ver testimonios
+                </Link>
               </div>
-            </motion.div>
+            </div>
 
             {/* Right image */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.06 }}
+            <div
               className="relative"
             >
               <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-[rgb(var(--brand-mint))/18] to-[rgb(var(--brand-lilac))/18] blur-2xl" />
-              <img
-                src={grupo.src}
+              <Image
+                src={grupo}
                 alt="Estudiantes trabajando en equipo"
+                width={1080}
+                height={720}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="relative w-full h-auto rounded-3xl shadow-2xl"
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -160,11 +182,7 @@ export default function PorQueOriPage() {
       {/* BENEFITS */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <div
             className="text-center mb-16"
           >
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
@@ -173,18 +191,14 @@ export default function PorQueOriPage() {
             <p className="font-body text-xl text-slate-600">
               Una experiencia educativa única y transformadora
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, i) => {
+            {benefits.map((benefit) => {
               const Icon = benefit.icon;
               return (
-                <motion.div
+                <div
                   key={benefit.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.6, ease: EASE, delay: i * 0.05 }}
                 >
                   <Card className="relative overflow-hidden p-8 rounded-3xl bg-white border border-black/10 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
                     <div className="absolute inset-0 bg-gradient-to-br from-black/[0.02] via-transparent to-black/[0.02]" />
@@ -206,7 +220,7 @@ export default function PorQueOriPage() {
                       </p>
                     </div>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -215,64 +229,10 @@ export default function PorQueOriPage() {
 
       {/* (ELIMINADO) Nuestro Equipo */}
 
-      {/* INSTALACIONES */}
-      {/*<section id="instalaciones" className="py-20 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
-              Nuestras instalaciones
-            </h2>
-            <p className="font-body text-xl text-slate-600">
-              Aulas equipadas con la mejor tecnología
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="rounded-3xl overflow-hidden shadow-2xl"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1741529189646-056bf8ea92cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                alt="Aula moderna con computadoras"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
-              className="rounded-3xl overflow-hidden shadow-2xl"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1662686439618-12cfd337c067?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                alt="Profesor ayudando a estudiante"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </div> 
-        </div>
-      </section> */}
-
       {/* TESTIMONIOS */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+      <section id="testimonios" className="py-16 md:py-20 px-6 bg-gradient-to-b from-white to-slate-50 scroll-mt-24">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <div
             className="text-center mb-16"
           >
             <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
@@ -281,16 +241,12 @@ export default function PorQueOriPage() {
             <p className="font-body text-xl text-slate-600">
               Testimonios reales de padres y estudiantes
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((t, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, ease: EASE, delay: index * 0.05 }}
               >
                 <Card className="p-8 rounded-3xl bg-white border border-black/10 shadow-sm hover:shadow-xl transition-shadow">
                   <div className="mb-6">
@@ -304,7 +260,7 @@ export default function PorQueOriPage() {
                   </div>
 
                   <p className="font-body text-slate-700 mb-6 italic leading-relaxed">
-                    "{t.text}"
+                    &ldquo;{t.text}&rdquo;
                   </p>
 
                   <div>
@@ -312,19 +268,15 @@ export default function PorQueOriPage() {
                     <div className="text-sm text-slate-600">{t.role}</div>
                   </div>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: EASE }}
+      <section className="py-16 md:py-20 px-6 bg-white">
+        <div
           className="max-w-4xl mx-auto text-center"
         >
           <h2 className="font-title text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">
@@ -336,19 +288,15 @@ export default function PorQueOriPage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/solicitar-plaza">
-              <Button className="btn-primary rounded-full px-10 py-7 text-lg shadow-lg">
-                Solicitar plaza
-              </Button>
+            <Link href="/solicitar-plaza" className="btn-primary btn-cta rounded-full shadow-lg">
+              Solicitar plaza
             </Link>
 
-            <Link href="/contacto">
-              <Button className="btn-secondary rounded-full px-10 py-7 text-lg shadow-lg">
-                Hablar con nosotros
-              </Button>
+            <Link href="/contacto" className="btn-secondary btn-cta rounded-full shadow-lg">
+              Hablar con nosotros
             </Link>
           </div>
-        </motion.div>
+        </div>
       </section>
     </div>
   );

@@ -46,6 +46,14 @@ export function Footer() {
             <p className="text-sm font-semibold text-slate-600">
               Aprendemos creando proyectos reales, paso a paso.
             </p>
+            <div className="flex flex-col gap-2 text-sm font-semibold text-slate-700">
+              <a href="tel:+34624547406" className="hover:text-[rgb(var(--brand-lilac))] transition">
+                +34 624 54 74 06
+              </a>
+              <a href="mailto:info@oriacademy.es" className="hover:text-[rgb(var(--brand-lilac))] transition">
+                info@oriacademy.es
+              </a>
+            </div>
           </div>
         </div>
 

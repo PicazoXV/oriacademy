@@ -1,21 +1,25 @@
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { isValidEmail, isValidPhone } from "@/lib/validation";
 
 export const runtime = "nodejs";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 export async function POST(req: Request) {
   try {
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return new Response(
+        JSON.stringify({ error: "Configuración del servidor incorrecta (Supabase)." }),
+        { status: 500 },
+      );
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      return new Response(
+        JSON.stringify({ error: "Configuración del servidor incorrecta (Email)." }),
+        { status: 500 },
+      );
+    }
+
     const body = await req.json();
 
     const nombreAlumno = String(body?.nombreAlumno ?? "").trim();
@@ -45,11 +49,16 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
-    if (telefono.replace(/\s/g, "").length < 7) {
+    if (!isValidPhone(telefono)) {
       return new Response(JSON.stringify({ error: "Teléfono inválido." }), {
         status: 400,
       });
     }
+
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+    );
 
     // 1) Guardar en Supabase
     const { error: dbError } = await supabase
@@ -72,6 +81,7 @@ export async function POST(req: Request) {
     }
 
     // 2) Enviar email
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { error: mailError } = await resend.emails.send({
       from: "ORI Academy <info@oriacademy.es>",
       to: "info@oriacademy.es",
@@ -90,11 +100,11 @@ export async function POST(req: Request) {
     });
 
     if (mailError) {
-  console.error("RESEND ERROR:", mailError);
-  return new Response(JSON.stringify({ error: mailError.message }), {
-    status: 502,
-  });
-}
+      console.error("RESEND ERROR:", mailError);
+      return new Response(JSON.stringify({ error: mailError.message }), {
+        status: 502,
+      });
+    }
 
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch {

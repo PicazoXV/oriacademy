@@ -1,18 +1,20 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
 import {
   CheckCircle2,
   Award,
-  Briefcase,
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
+import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
-const EASE: [number, number, number, number] = [0.2, 0.8, 0.2, 1];
+export const metadata: Metadata = buildPageMetadata({
+  title: "Camino del Alumno",
+  description:
+    "Descubre el plan de aprendizaje de ORI Academy de 7 a 16 años: etapas progresivas, proyectos reales y certificaciones.",
+  path: "/camino-alumno",
+});
 
 const timeline = [
   {
@@ -80,8 +82,33 @@ const certifications = [
 ];
 
 export default function Page() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteConfig.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Camino del alumno",
+        item: `${siteConfig.url}/camino-alumno`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       {/* HERO premium */}
       <section className="relative overflow-hidden">
         {/* Fondo tipo Cursos (mint → gris → lilac) */}
@@ -89,17 +116,14 @@ export default function Page() {
         <div className="absolute inset-0 bg-slate-200/25" />
 
         {/* glows */}
-        <div className="absolute -top-44 -left-44 h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/26] blur-3xl" />
-        <div className="absolute -bottom-56 -right-52 h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/26] blur-3xl" />
+        <div className="absolute -top-44 -left-44 hidden h-[680px] w-[680px] rounded-full bg-[rgb(var(--brand-mint))/26] blur-3xl md:block" />
+        <div className="absolute -bottom-56 -right-52 hidden h-[760px] w-[760px] rounded-full bg-[rgb(var(--brand-lilac))/26] blur-3xl md:block" />
 
         {/* grid sutil */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:64px_64px]" />
 
-        <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
+        <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 text-center">
+          <div
           >
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-[rgb(var(--ink))/80] shadow-sm backdrop-blur">
               <Sparkles className="h-4 w-4 text-[rgb(var(--brand-mint))]" />
@@ -108,7 +132,7 @@ export default function Page() {
               <span>Proyectos reales</span>
             </div>
 
-            <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900">
+            <h1 className="font-title text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900">
               Camino del{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))]">
                 Alumno
@@ -121,29 +145,21 @@ export default function Page() {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#timeline" className="w-full sm:w-auto">
-                <Button className="btn-primary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
-                  Ver etapas
-                </Button>
-              </a>
-              <Link href="/solicitar-plaza" className="w-full sm:w-auto">
-                <Button className="btn-secondary w-full sm:w-auto rounded-full px-10 py-6 text-lg">
-                  Solicitar plaza
-                </Button>
+              <Link href="#timeline" className="btn-primary btn-cta w-full sm:w-auto rounded-full">
+                Ver etapas
+              </Link>
+              <Link href="/solicitar-plaza" className="btn-secondary btn-cta w-full sm:w-auto rounded-full">
+                Solicitar plaza
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* TIMELINE premium */}
-      <section id="timeline" className="relative py-20 px-6">
+      <section id="timeline" className="relative py-16 md:py-20 px-6 scroll-mt-24">
         <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <div
             className="text-center"
           >
             <h2 className="font-title text-3xl md:text-4xl font-extrabold text-slate-900">
@@ -152,7 +168,7 @@ export default function Page() {
             <p className="font-body mx-auto mt-4 max-w-3xl text-slate-600 text-lg">
               Cada etapa construye sobre la anterior: más autonomía, más nivel, más portfolio.
             </p>
-          </motion.div>
+          </div>
 
           <div className="relative mt-14">
             {/* Línea central (integrada, sin negro duro) */}
@@ -163,12 +179,8 @@ export default function Page() {
                 const sideLeft = index % 2 === 0;
 
                 return (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.6, ease: EASE, delay: index * 0.05 }}
                     className="relative"
                   >
                     <div className="grid items-stretch gap-6 md:grid-cols-2">
@@ -194,18 +206,14 @@ export default function Page() {
                         />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
           </div>
 
           {/* CTA intermedio */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <div
             className="mt-16"
           >
             <Card className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 md:p-10 shadow-sm">
@@ -219,29 +227,23 @@ export default function Page() {
                     Te recomendamos la etapa ideal según edad y experiencia.
                   </p>
                 </div>
-                <Link href="/contacto">
-                  <Button className="btn-primary rounded-full px-8 py-6 text-lg">
-                    Hablar con nosotros <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
+                <Link href="/contacto" className="btn-primary btn-cta rounded-full">
+                  Hablar con nosotros <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
             </Card>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* PORTFOLIO + CERTIFICACIONES premium */}
-      <section className="relative overflow-hidden py-20 px-6">
+      <section className="relative overflow-hidden py-16 md:py-20 px-6">
         <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/10] via-white to-[rgb(var(--brand-lilac))/10]" />
-        <div className="absolute -top-48 right-[-160px] h-[620px] w-[620px] rounded-full bg-[rgb(var(--brand-mint))/16] blur-3xl" />
-        <div className="absolute -bottom-56 left-[-170px] h-[700px] w-[700px] rounded-full bg-[rgb(var(--brand-lilac))/16] blur-3xl" />
+        <div className="absolute -top-48 right-[-160px] hidden h-[620px] w-[620px] rounded-full bg-[rgb(var(--brand-mint))/16] blur-3xl md:block" />
+        <div className="absolute -bottom-56 left-[-170px] hidden h-[700px] w-[700px] rounded-full bg-[rgb(var(--brand-lilac))/16] blur-3xl md:block" />
 
         <div className="relative mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <div
             className="text-center"
           >
             <h2 className="font-title text-3xl md:text-4xl font-extrabold text-slate-900">
@@ -250,23 +252,38 @@ export default function Page() {
             <p className="font-body mx-auto mt-4 max-w-3xl text-slate-600 text-lg">
               Al final, no solo “saben programar”: tienen pruebas visibles de lo que hacen.
             </p>
-          </motion.div>
+          </div>
 
           <div className="mt-14 grid gap-8 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              
-            </motion.div>
+            <Card className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-mint))/12] via-white to-transparent" />
+              <div className="relative">
+                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[rgb(var(--brand-mint))] to-[rgb(var(--brand-lilac))] shadow-lg">
+                  <Sparkles className="h-8 w-8 text-white" />
+                </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
+                <h3 className="font-title text-2xl md:text-3xl font-extrabold text-slate-900">
+                  Portfolio real
+                </h3>
+                <p className="font-body mt-3 text-slate-600">
+                  Cada alumno termina con proyectos que puede enseñar y seguir mejorando.
+                </p>
+
+                <ul className="mt-6 space-y-3">
+                  <BulletMint>Videojuegos y apps creados durante el curso.</BulletMint>
+                  <BulletMint>Documentación simple de su progreso por etapas.</BulletMint>
+                  <BulletMint>Base para becas, entrevistas o pruebas técnicas.</BulletMint>
+                </ul>
+
+                <div className="mt-8">
+                  <Link href="/cursos" className="btn-secondary btn-cta rounded-full">
+                    Ver cursos
+                  </Link>
+                </div>
+              </div>
+            </Card>
+
+            <div
             >
               <Card className="relative overflow-hidden rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
                 <div className="absolute inset-0 bg-gradient-to-br from-[rgb(var(--brand-lilac))/12] via-white to-transparent" />
@@ -289,15 +306,13 @@ export default function Page() {
                   </ul>
 
                   <div className="mt-8">
-                    <Link href="/solicitar-plaza">
-                      <Button className="btn-primary rounded-full px-8 py-6 text-lg">
-                        Solicitar plaza
-                      </Button>
+                    <Link href="/solicitar-plaza" className="btn-primary btn-cta rounded-full">
+                      Solicitar plaza
                     </Link>
                   </div>
                 </div>
               </Card>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -397,15 +412,11 @@ function StagePanel({ stage }: { stage: (typeof timeline)[number] }) {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/cursos">
-            <Button className="btn-soft-lilac rounded-full px-7 py-5 text-base">
-              Ver cursos
-            </Button>
+          <Link href="/cursos" className="btn-soft-lilac btn-cta rounded-full text-base">
+            Ver cursos
           </Link>
-          <Link href="/contacto">
-            <Button className="btn-secondary rounded-full px-7 py-5 text-base">
-              Resolver dudas
-            </Button>
+          <Link href="/contacto" className="btn-secondary btn-cta rounded-full text-base">
+            Resolver dudas
           </Link>
         </div>
       </div>

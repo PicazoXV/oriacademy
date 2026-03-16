@@ -17,6 +17,34 @@ body {
   color: rgb(var(--ink));
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 60;
+  border-radius: 0.75rem;
+  background: rgb(var(--ink));
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transform: translateY(-140%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid rgb(var(--brand-mint));
+  outline-offset: 2px;
+}
+
+.font-title {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ✅ Component classes sin @apply (0 riesgo de "unknown utility") */
 .btn-primary {
   display: inline-flex;
@@ -74,3 +102,32 @@ body {
 }
 .btn-soft-mint:hover,
 .btn-soft-lilac:hover { box-shadow: 0 14px 24px rgba(0,0,0,.14); transform: translateY(-1px); }
+
+.btn-cta {
+  padding: 0.85rem 1.4rem;
+  font-size: 1rem;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-soft-mint:focus-visible,
+.btn-soft-lilac:focus-visible {
+  outline: 2px solid rgb(var(--brand-mint));
+  outline-offset: 2px;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid rgb(var(--brand-mint));
+  outline-offset: 2px;
+}
+
+:where(section[id], div[id]) {
+  scroll-margin-top: 5.5rem;
+}
+
+@media (min-width: 640px) {
+  .btn-cta {
+    padding: 1rem 2rem;
+    font-size: 1.0625rem;
+  }
+}

@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { isValidEmail, isValidPhone } from "@/lib/validation";
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +11,14 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json();
+    const body = (await req.json().catch(() => null)) as
+      | Record<string, unknown>
+      | null;
+    if (!body) {
+      return new Response(JSON.stringify({ error: "Body inválido." }), {
+        status: 400,
+      });
+    }
 
     const name = String(body?.name ?? "").trim();
     const email = String(body?.email ?? "").trim();
@@ -22,6 +30,18 @@ export async function POST(req: Request) {
         JSON.stringify({ error: "Faltan campos obligatorios." }),
         { status: 400 }
       );
+    }
+
+    if (!isValidEmail(email)) {
+      return new Response(JSON.stringify({ error: "Email inválido." }), {
+        status: 400,
+      });
+    }
+
+    if (phone && !isValidPhone(phone)) {
+      return new Response(JSON.stringify({ error: "Teléfono inválido." }), {
+        status: 400,
+      });
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
