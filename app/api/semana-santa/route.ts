@@ -29,6 +29,9 @@ export async function POST(req: Request) {
     const telefono = String(body?.telefono ?? "").trim();
     const email = String(body?.email ?? "").trim();
     const recibirInfo = Boolean(body?.recibirInfo ?? false);
+    const semanasInteres: string[] = Array.isArray(body?.semanasInteres)
+      ? (body.semanasInteres as unknown[]).map((s) => String(s))
+      : [];
 
     // Validación mínima
     if (
@@ -86,12 +89,13 @@ export async function POST(req: Request) {
       from: "ORI Academy <info@oriacademy.es>",
       to: "info@oriacademy.es",
       replyTo: email,
-      subject: `Reserva Semana Santa: ${nombreAlumno} (${edad})`,
+      subject: `Reserva Talleres Verano 2026: ${nombreAlumno} (${edad})`,
       html: `
-        <h2>Nueva reserva — Semana Santa</h2>
+        <h2>Nueva reserva — Talleres de Verano 2026</h2>
         <p><strong>Alumno/a:</strong> ${escapeHtml(nombreAlumno)}</p>
         <p><strong>Edad:</strong> ${escapeHtml(edad)}</p>
         <p><strong>Taller:</strong> ${escapeHtml(taller)}</p>
+        <p><strong>Semanas de interés:</strong> ${semanasInteres.length ? semanasInteres.map(escapeHtml).join(", ") : "Cualquier semana"}</p>
         <p><strong>Padre/Madre/Tutor:</strong> ${escapeHtml(nombrePadre)}</p>
         <p><strong>Teléfono:</strong> ${escapeHtml(telefono)}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>

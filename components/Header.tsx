@@ -99,7 +99,7 @@ export function Header() {
     <>
       {/* Header FIXED (siempre pegado arriba) */}
       <header className="fixed inset-x-0 top-0 z-50">
-        <div className="bg-white/70 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+        <div className="bg-white/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
             <Link href="/" className="flex h-full items-center">
               <Image
