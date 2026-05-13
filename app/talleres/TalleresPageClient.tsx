@@ -27,6 +27,7 @@ type FormState = {
   nombreAlumno: string;
   edad: string;
   taller: string;
+  hazloCampamento: boolean;
   nombrePadre: string;
   telefono: string;
   email: string;
@@ -50,6 +51,7 @@ export default function TalleresPage() {
     nombreAlumno: "",
     edad: "",
     taller: "",
+    hazloCampamento: false,
     nombrePadre: "",
     telefono: "",
     email: "",
@@ -110,6 +112,7 @@ export default function TalleresPage() {
       nombreAlumno: "",
       edad: "",
       taller: "",
+      hazloCampamento: false,
       nombrePadre: "",
       telefono: "",
       email: "",
@@ -324,10 +327,10 @@ export default function TalleresPage() {
                   transition={{ duration: 0.6, ease: EASE, delay: idx * 0.1 }}
                   whileHover={{ y: -6 }}
                 >
-                  <div className={`relative h-full rounded-3xl border border-black/8 bg-gradient-to-b ${bloque.bg} overflow-hidden shadow-sm hover:shadow-xl transition-shadow`}>
+                  <div className={`relative h-full flex flex-col rounded-3xl border border-black/8 bg-gradient-to-b ${bloque.bg} overflow-hidden shadow-sm hover:shadow-xl transition-shadow`}>
                     <div className={`relative h-2 bg-gradient-to-r ${bloque.color}`} />
 
-                    <div className="p-7">
+                    <div className="p-7 flex flex-col flex-1">
                       <div className="flex items-start justify-between mb-4">
                         <span className="inline-flex items-center rounded-full bg-white border border-black/10 px-3 py-1 text-xs font-bold text-slate-700 shadow-sm">
                           {bloque.edad}
@@ -361,12 +364,14 @@ export default function TalleresPage() {
                         </div>
                       </div>
 
-                      <a
-                        href="#verano-reserva"
-                        className={`mt-6 block w-full rounded-full bg-gradient-to-r ${bloque.color} py-3 text-center text-sm font-bold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all`}
-                      >
-                        Reservar plaza
-                      </a>
+                      <div className="mt-auto pt-6">
+                        <a
+                          href="#verano-reserva"
+                          className={`block w-full rounded-full bg-gradient-to-r ${bloque.color} py-3 text-center text-sm font-bold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all`}
+                        >
+                          Reservar plaza
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -685,21 +690,66 @@ export default function TalleresPage() {
                       </PremiumSelect>
                     </div>
 
-                    <PremiumSelect
-                      label="Taller de interés *"
-                      id="taller"
-                      name="taller"
-                      value={formData.taller}
-                      onChange={handleChange}
-                      disabled={loading}
-                      required
-                    >
-                      <option value="">Selecciona un taller</option>
-                      <option value="verano-junior">Introducción a la programación — Verano 2026 (7–9 años)</option>
-                      <option value="verano-medio">Diseño de videojuegos — Verano 2026 (10–12 años)</option>
-                      <option value="verano-avanzado">Programación avanzada — Verano 2026 (13–16 años)</option>
-                      <option value="hazlo-campamento">Hazlo Campamento (toda la mañana · 9:30–13:00)</option>
-                    </PremiumSelect>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-700">Taller de interés *</p>
+                      <div className="mt-2 space-y-2">
+                        {[
+                          { value: "verano-junior", label: "Introducción a la programación", sub: "7–9 años" },
+                          { value: "verano-medio", label: "Diseño de videojuegos", sub: "10–12 años" },
+                          { value: "verano-avanzado", label: "Programación avanzada", sub: "13–16 años" },
+                        ].map(({ value, label, sub }) => (
+                          <label
+                            key={value}
+                            className={`flex items-center gap-3 rounded-2xl border p-4 cursor-pointer transition-all ${
+                              formData.taller === value
+                                ? "border-[rgb(var(--brand-mint))] bg-[rgb(var(--brand-mint))/10] shadow-sm ring-1 ring-[rgb(var(--brand-mint))/30]"
+                                : "border-slate-200 bg-white hover:border-[rgb(var(--brand-mint))/50] hover:bg-slate-50"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="taller"
+                              value={value}
+                              checked={formData.taller === value}
+                              onChange={handleChange}
+                              disabled={loading}
+                              className="accent-[rgb(var(--brand-mint))] h-4 w-4 shrink-0"
+                            />
+                            <div>
+                              <span className={`text-sm font-bold ${formData.taller === value ? "text-[rgb(var(--brand-mint))]" : "text-slate-700"}`}>
+                                {label}
+                              </span>
+                              <span className="ml-2 text-xs text-slate-500">— {sub}</span>
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+
+                      <label
+                        className={`mt-3 flex items-center gap-3 rounded-2xl border p-4 cursor-pointer transition-all ${
+                          formData.hazloCampamento
+                            ? "border-[rgb(var(--brand-mint))] bg-[rgb(var(--brand-mint))/10] shadow-sm ring-1 ring-[rgb(var(--brand-mint))/30]"
+                            : "border-slate-200 bg-white hover:border-[rgb(var(--brand-mint))/50] hover:bg-slate-50"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          id="hazloCampamento"
+                          name="hazloCampamento"
+                          checked={formData.hazloCampamento}
+                          onChange={handleChange}
+                          disabled={loading}
+                          className="accent-[rgb(var(--brand-mint))] h-4 w-4 shrink-0"
+                        />
+                        <div>
+                          <span className={`text-sm font-bold flex items-center gap-1.5 ${formData.hazloCampamento ? "text-[rgb(var(--brand-mint))]" : "text-slate-700"}`}>
+                            <Tent className="h-4 w-4" />
+                            Hazlo Campamento
+                          </span>
+                          <span className="text-xs text-slate-500">Modalidad mañana completa · 9:30–13:00</span>
+                        </div>
+                      </label>
+                    </div>
 
                     {/* Semanas de interés — selección múltiple */}
                     <div>
