@@ -16,6 +16,7 @@ import {
   Target,
   Tent,
   Star,
+  Download,
 } from "lucide-react";
 
 import { Button } from "@/components/Button";
@@ -71,6 +72,8 @@ export default function TalleresPage() {
         color: "from-emerald-400 to-[rgb(var(--brand-mint))]",
         bg: "from-emerald-50 to-teal-50",
         toolColor: "bg-emerald-100 text-emerald-700 border-emerald-200",
+        dossier: "/dossiers/iniciacion-verano.pdf",
+        dossierBtn: "border-emerald-400 text-emerald-600 hover:bg-emerald-50",
       },
       {
         id: "verano-medio",
@@ -82,6 +85,8 @@ export default function TalleresPage() {
         color: "from-violet-500 to-[rgb(var(--brand-lilac))]",
         bg: "from-violet-50 to-purple-50",
         toolColor: "bg-violet-100 text-violet-700 border-violet-200",
+        dossier: "/dossiers/intermedio-verano.pdf",
+        dossierBtn: "border-violet-400 text-violet-600 hover:bg-violet-50",
       },
       {
         id: "verano-avanzado",
@@ -93,6 +98,8 @@ export default function TalleresPage() {
         color: "from-orange-400 to-rose-500",
         bg: "from-orange-50 to-rose-50",
         toolColor: "bg-orange-100 text-orange-700 border-orange-200",
+        dossier: "/dossiers/avanzado-verano.pdf",
+        dossierBtn: "border-orange-400 text-orange-600 hover:bg-orange-50",
       },
     ],
     [],
@@ -364,7 +371,15 @@ export default function TalleresPage() {
                         </div>
                       </div>
 
-                      <div className="mt-auto pt-6">
+                      <div className="mt-auto pt-6 flex flex-col gap-3">
+                        <a
+                          href={bloque.dossier}
+                          download
+                          className={`flex items-center justify-center gap-2 w-full rounded-full border-2 bg-white py-3 text-center text-sm font-bold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all ${bloque.dossierBtn}`}
+                        >
+                          <Download className="h-4 w-4" />
+                          Descargar dossier
+                        </a>
                         <a
                           href="#verano-reserva"
                           className={`block w-full rounded-full bg-gradient-to-r ${bloque.color} py-3 text-center text-sm font-bold text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all`}
