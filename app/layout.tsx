@@ -3,6 +3,7 @@ import "./globals.css";
 import { gothamTitle } from "@/lib/fonts";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 export const metadata = {
   title: "ORI Academy",
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <Header />
     {children}
     <Footer />
+    <ChatWidget />
   </body>
 </html>
   );
